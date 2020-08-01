@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'coordinateHelper.dart';
 import 'cross.dart';
@@ -26,6 +27,21 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class GameData extends ChangeNotifier {
+  bool blackToPlay = true;
+  //unused - Necessary?
+  gameloop() {
+    print("I ran - gameloop");
+    blackToPlay = !blackToPlay;
+    print(blackToPlay);
+  }
+
+  void changePlayer() {
+    blackToPlay = !blackToPlay;
+    notifyListeners();
+  }
+}
+
 class Game extends StatefulWidget {
   @override
   _GameState createState() => _GameState();
@@ -34,6 +50,7 @@ class Game extends StatefulWidget {
 class _GameState extends State<Game> {
   int boardSize = 9;
   Map<String, Stone> boardState = Map<String, Stone>();
+
   @override
   Widget build(BuildContext context) {
     for (var x = 0; x < boardSize; x++) {
@@ -47,14 +64,17 @@ class _GameState extends State<Game> {
     print("State:");
     print(boardState);
     //TODO: Container and column can be removed after testing
-    return Column(children: [
-      Container(
-        child: Grid(
-          gridSize: boardSize,
-          boardState: boardState,
+    return ChangeNotifierProvider<GameData>(
+      create: (context) => GameData(),
+      child: Column(children: [
+        Container(
+          child: Grid(
+            gridSize: boardSize,
+            boardState: boardState,
+          ),
         ),
-      ),
-    ]);
+      ]),
+    );
   }
 }
 

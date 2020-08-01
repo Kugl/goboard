@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_board/main.dart';
+import 'package:provider/provider.dart';
 
 import 'coordinateHelper.dart';
 
@@ -34,16 +36,26 @@ class _StoneState extends State<Stone> {
 
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton(
-      backgroundColor: pickStoneColor(color),
-      //TODO: change second 8 to null
-      elevation: (color == StoneColor.black) ? 4 : 4,
-      onPressed: () {
-        print(widget.coordinates.returnMapCoordiante());
-        setState(() {
-          color = StoneColor.black;
-        });
-      },
+    //TODO: Exchange for more elegant sizing
+    return SizedBox(
+      height: 40,
+      width: 40,
+      child: FloatingActionButton(
+        backgroundColor: pickStoneColor(color),
+        //TODO: change second 8 to null
+        elevation: (color == StoneColor.black) ? 4 : 4,
+        onPressed: () {
+          print(widget.coordinates.returnMapCoordiante());
+          setState(() {
+            //if black is to play
+            GameData gamedata = Provider.of<GameData>(context, listen: false);
+            (gamedata.blackToPlay)
+                ? color = StoneColor.black
+                : color = StoneColor.white;
+            gamedata.changePlayer();
+          });
+        },
+      ),
     );
   }
 }
