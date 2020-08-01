@@ -36,8 +36,8 @@ class _StoneState extends State<Stone> {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       backgroundColor: pickStoneColor(color),
-      //TODO: change first 8 to null
-      elevation: (color == StoneColor.none) ? 8 : 8,
+      //TODO: change second 8 to null
+      elevation: (color == StoneColor.black) ? 4 : 4,
       onPressed: () {
         print(widget.coordinates.returnMapCoordiante());
         setState(() {

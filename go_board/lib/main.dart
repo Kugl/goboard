@@ -32,7 +32,7 @@ class Game extends StatefulWidget {
 }
 
 class _GameState extends State<Game> {
-  int boardSize = 3;
+  int boardSize = 9;
   Map<String, Stone> boardState = Map<String, Stone>();
   @override
   Widget build(BuildContext context) {
@@ -107,7 +107,7 @@ class Cell extends StatelessWidget {
       child: Cross(
         //TODO: fix
         //orientation: CrossOrientation.right,
-        child: Padding(padding: const EdgeInsets.all(8.0), child: stone),
+        child: Padding(padding: const EdgeInsets.all(1.0), child: stone),
       ),
     );
   }
