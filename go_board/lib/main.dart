@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'coordinateHelper.dart';
 import 'cross.dart';
 import 'stone.dart';
 
@@ -25,12 +26,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class BoardCoordiante {
-  int xcoordinate;
-  int ycoordinate;
-  BoardCoordiante(this.xcoordinate, this.ycoordinate);
-}
-
 class Game extends StatefulWidget {
   @override
   _GameState createState() => _GameState();
@@ -38,14 +33,14 @@ class Game extends StatefulWidget {
 
 class _GameState extends State<Game> {
   int boardSize = 3;
-  Map<BoardCoordiante, Stone> boardState = Map<BoardCoordiante, Stone>();
+  Map<String, Stone> boardState = Map<String, Stone>();
   @override
   Widget build(BuildContext context) {
     print("I got here");
     for (var x = 0; x < boardSize; x++) {
       for (var y = 0; y < boardSize; y++) {
         BoardCoordiante coord = BoardCoordiante(x, y);
-        boardState[coord] = Stone(
+        boardState[coord.returnMapCoordiante()] = Stone(
           initialColor: StoneColor.none,
           coordinates: coord,
         );
@@ -53,16 +48,28 @@ class _GameState extends State<Game> {
     }
     print("State");
     print(boardState);
-    return Grid(
-      gridSize: boardSize,
-      boardState: boardState,
-    );
+    return Column(children: [
+      Container(
+        child: Grid(
+          gridSize: boardSize,
+          boardState: boardState,
+        ),
+      ),
+      FlatButton(
+        onPressed: () {
+          print("ShowStone:");
+          print(boardState["aa"]);
+          print(boardState["aa"].initialColor);
+        },
+        child: Text("Show Stone"),
+      )
+    ]);
   }
 }
 
 class Grid extends StatelessWidget {
   final int gridSize;
-  final Map<BoardCoordiante, Stone> boardState;
+  final Map<String, Stone> boardState;
   Grid({@required this.gridSize, @required this.boardState});
   @override
   Widget build(BuildContext context) {
@@ -76,7 +83,7 @@ class Grid extends StatelessWidget {
 
   List<Widget> generateGrid({int rows = 1, int columns = 1}) {
     List<Widget> rowList = new List();
-    for (var i = rows; i >= 1; i--) {
+    for (var i = rows - 1; i >= 0; i--) {
       rowList.add(
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -89,9 +96,11 @@ class Grid extends StatelessWidget {
 
   List<Widget> generateRow({int items = 0, int rownumber = 0}) {
     List<Widget> list = new List();
-    for (var i = items; i >= 1; i--) {
+    for (var i = 0; i <= items - 1; i++) {
       //TODO: Change to dynamic
-      list.add(Cell(stone: boardState[BoardCoordiante(rownumber, i)]));
+      list.add(Cell(
+          stone:
+              boardState[BoardCoordiante(rownumber, i).returnMapCoordiante()]));
     }
     return list;
   }

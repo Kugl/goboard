@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'coordinateHelper.dart';
 import 'main.dart';
 
 enum StoneColor { black, white, none }
@@ -40,7 +41,9 @@ class _StoneState extends State<Stone> {
       backgroundColor: pickStoneColor(color),
       //TODO: change first 8 to null
       elevation: (color == StoneColor.none) ? 8 : 8,
-      onPressed: () {},
+      onPressed: () {
+        print(widget.coordinates.returnMapCoordiante());
+      },
     );
   }
 }
