@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'cross.dart';
+import 'stone.dart';
 
 void main() {
   runApp(MyApp());
@@ -24,38 +25,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-enum StoneColor { black, white, none }
-
-class Stone extends StatelessWidget {
-  StoneColor color;
-  BoardCoordiante coordinates;
-  List<BoardCoordiante> neighbors;
-  Stone({this.color = StoneColor.none, @required this.coordinates});
-  defineNeighbors() {}
-  Color pickStoneColor(StoneColor col) {
-    switch (col) {
-      case StoneColor.black:
-        return Colors.black;
-        break;
-      case StoneColor.white:
-        return Colors.white;
-        break;
-      default:
-        return Colors.transparent;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FloatingActionButton(
-      backgroundColor: pickStoneColor(color),
-      //TODO: change first 8 to null
-      elevation: (color == StoneColor.none) ? 8 : 8,
-      onPressed: () {},
-    );
-  }
-}
-
 class BoardCoordiante {
   int xcoordinate;
   int ycoordinate;
@@ -68,7 +37,7 @@ class Game extends StatefulWidget {
 }
 
 class _GameState extends State<Game> {
-  int boardSize = 9;
+  int boardSize = 3;
   Map<BoardCoordiante, Stone> boardState = Map<BoardCoordiante, Stone>();
   @override
   Widget build(BuildContext context) {
@@ -77,67 +46,71 @@ class _GameState extends State<Game> {
       for (var y = 0; y < boardSize; y++) {
         BoardCoordiante coord = BoardCoordiante(x, y);
         boardState[coord] = Stone(
-          color: StoneColor.none,
+          initialColor: StoneColor.none,
           coordinates: coord,
         );
       }
     }
     print("State");
     print(boardState);
-    return Grid();
-  }
-}
-
-class Cell extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(),
-      child: Cross(
-        //TODO: fix
-        //orientation: CrossOrientation.right,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Stone(
-            coordinates: null,
-            color: StoneColor.none,
-          ),
-        ),
-      ),
+    return Grid(
+      gridSize: boardSize,
+      boardState: boardState,
     );
   }
 }
 
 class Grid extends StatelessWidget {
+  final int gridSize;
+  final Map<BoardCoordiante, Stone> boardState;
+  Grid({@required this.gridSize, @required this.boardState});
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
-        children: generateGrid(rows: 5, columns: 5),
+        children: generateGrid(rows: gridSize, columns: gridSize),
       ),
     );
   }
 
   List<Widget> generateGrid({int rows = 1, int columns = 1}) {
-    List<Widget> list = new List();
+    List<Widget> rowList = new List();
     for (var i = rows; i >= 1; i--) {
-      list.add(
+      rowList.add(
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: generateRow(items: columns),
+          children: generateRow(items: columns, rownumber: i),
         ),
       );
     }
-    return list;
+    return rowList;
   }
 
-  List<Widget> generateRow({int items = 0}) {
+  List<Widget> generateRow({int items = 0, int rownumber = 0}) {
     List<Widget> list = new List();
     for (var i = items; i >= 1; i--) {
       //TODO: Change to dynamic
-      list.add(Cell());
+      list.add(Cell(stone: boardState[BoardCoordiante(rownumber, i)]));
     }
     return list;
+  }
+}
+
+class Cell extends StatelessWidget {
+  final Stone stone;
+  Cell({this.stone});
+  @override
+  Widget build(BuildContext context) {
+    print("Stone:");
+    print(stone);
+    return Container(
+      decoration: BoxDecoration(),
+      child: Cross(
+        //TODO: fix
+        //orientation: CrossOrientation.right,
+        child: Padding(padding: const EdgeInsets.all(8.0), child: stone),
+      ),
+    );
   }
 }
