@@ -36,7 +36,6 @@ class _GameState extends State<Game> {
   Map<String, Stone> boardState = Map<String, Stone>();
   @override
   Widget build(BuildContext context) {
-    print("I got here");
     for (var x = 0; x < boardSize; x++) {
       for (var y = 0; y < boardSize; y++) {
         BoardCoordiante coord = BoardCoordiante(x, y);
@@ -45,21 +44,15 @@ class _GameState extends State<Game> {
         );
       }
     }
-    print("State");
+    print("State:");
     print(boardState);
+    //TODO: Container and column can be removed after testing
     return Column(children: [
       Container(
         child: Grid(
           gridSize: boardSize,
           boardState: boardState,
         ),
-      ),
-      FlatButton(
-        onPressed: () {
-          print("ShowStone:");
-          print(boardState["aa"]);
-        },
-        child: Text("Show Stone"),
       ),
     ]);
   }
@@ -109,8 +102,6 @@ class Cell extends StatelessWidget {
   Cell({this.stone});
   @override
   Widget build(BuildContext context) {
-    print("Stone:");
-    print(stone);
     return Container(
       decoration: BoxDecoration(),
       child: Cross(
