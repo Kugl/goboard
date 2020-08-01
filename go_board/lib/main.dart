@@ -29,11 +29,16 @@ class MyApp extends StatelessWidget {
 
 class GameData extends ChangeNotifier {
   bool blackToPlay = true;
-  //unused - Necessary?
-  gameloop() {
-    print("I ran - gameloop");
-    blackToPlay = !blackToPlay;
-    print(blackToPlay);
+
+  //TODO: place stone method
+  placeStone() {
+    // reduce liberties for all neighbours by 1
+    // reduce own liberties for each placed stone on neighbour
+
+    // form groups with all neighbours that are of same color
+    // remove all groups with zero liberties of opposite color
+
+    changePlayer();
   }
 
   void changePlayer() {
@@ -48,6 +53,7 @@ class Game extends StatefulWidget {
 }
 
 class _GameState extends State<Game> {
+  //TODO: Move to wehere it can be found
   int boardSize = 9;
   Map<String, Stone> boardState = Map<String, Stone>();
 
@@ -58,6 +64,7 @@ class _GameState extends State<Game> {
         BoardCoordiante coord = BoardCoordiante(x, y);
         boardState[coord.returnMapCoordiante()] = Stone(
           coordinates: coord,
+          neighbors: CoordHelper.determineNeighbors(coord, boardSize),
         );
       }
     }
