@@ -29,13 +29,20 @@ class MyApp extends StatelessWidget {
 
 class GameData extends ChangeNotifier {
   bool blackToPlay = true;
+  int boardSize = 9;
+  Map<String, Stone> boardState = Map<String, Stone>();
 
   //TODO: place stone method
   placeStone() {
+    // Change board state to reflect presence of new stone
+
     // reduce liberties for all neighbours by 1
     // reduce own liberties for each placed stone on neighbour
 
+    //check for groups and add if possible
     // form groups with all neighbours that are of same color
+    // adjust group liberties
+
     // remove all groups with zero liberties of opposite color
 
     changePlayer();
@@ -54,30 +61,29 @@ class Game extends StatefulWidget {
 
 class _GameState extends State<Game> {
   //TODO: Move to wehere it can be found
-  int boardSize = 9;
-  Map<String, Stone> boardState = Map<String, Stone>();
+  GameData game = GameData();
 
   @override
   Widget build(BuildContext context) {
-    for (var x = 0; x < boardSize; x++) {
-      for (var y = 0; y < boardSize; y++) {
+    for (var x = 0; x < game.boardSize; x++) {
+      for (var y = 0; y < game.boardSize; y++) {
         BoardCoordiante coord = BoardCoordiante(x, y);
-        boardState[coord.returnMapCoordiante()] = Stone(
+        game.boardState[coord.returnMapCoordiante()] = Stone(
           coordinates: coord,
-          neighbors: CoordHelper.determineNeighbors(coord, boardSize),
+          neighbors: CoordHelper.determineNeighbors(coord, game.boardSize),
         );
       }
     }
     print("State:");
-    print(boardState);
+    print(game.boardState);
     //TODO: Container and column can be removed after testing
     return ChangeNotifierProvider<GameData>(
-      create: (context) => GameData(),
+      create: (context) => game,
       child: Column(children: [
         Container(
           child: Grid(
-            gridSize: boardSize,
-            boardState: boardState,
+            gridSize: game.boardSize,
+            boardState: game.boardState,
           ),
         ),
       ]),
