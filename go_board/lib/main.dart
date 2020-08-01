@@ -41,7 +41,6 @@ class _GameState extends State<Game> {
       for (var y = 0; y < boardSize; y++) {
         BoardCoordiante coord = BoardCoordiante(x, y);
         boardState[coord.returnMapCoordiante()] = Stone(
-          initialColor: StoneColor.none,
           coordinates: coord,
         );
       }
@@ -59,10 +58,9 @@ class _GameState extends State<Game> {
         onPressed: () {
           print("ShowStone:");
           print(boardState["aa"]);
-          print(boardState["aa"].initialColor);
         },
         child: Text("Show Stone"),
-      )
+      ),
     ]);
   }
 }

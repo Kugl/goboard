@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'coordinateHelper.dart';
-import 'main.dart';
 
 enum StoneColor { black, white, none }
 
 class Stone extends StatefulWidget {
-  final StoneColor initialColor;
   final BoardCoordiante coordinates;
 
-  Stone({this.initialColor = StoneColor.none, @required this.coordinates});
+  Stone({@required this.coordinates});
 
   @override
   _StoneState createState() => _StoneState();
@@ -36,13 +34,15 @@ class _StoneState extends State<Stone> {
 
   @override
   Widget build(BuildContext context) {
-    color = widget.initialColor;
     return FloatingActionButton(
       backgroundColor: pickStoneColor(color),
       //TODO: change first 8 to null
       elevation: (color == StoneColor.none) ? 8 : 8,
       onPressed: () {
         print(widget.coordinates.returnMapCoordiante());
+        setState(() {
+          color = StoneColor.black;
+        });
       },
     );
   }
