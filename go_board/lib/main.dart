@@ -136,8 +136,8 @@ class Grid extends StatelessWidget {
           boardState[BoardCoordiante(rownumber, i).returnMapCoordiante()];
       list.add(Cell(
           stoneSpot: TheStone(
-              coordinates: currentStone.coordinates,
-              color: currentStone.color)));
+        coordinates: currentStone.coordinates,
+      )));
     }
     return list;
   }
