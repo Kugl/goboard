@@ -28,21 +28,23 @@ class MyApp extends StatelessWidget {
 }
 
 class GameData extends ChangeNotifier {
+  Map<String, StoneData> newBoardState = Map<String, StoneData>();
+
   bool blackToPlay = true;
   int boardSize = 9;
-  Map<String, Stone> boardState = Map<String, Stone>();
+  Map<String, TheStone> boardState = Map<String, TheStone>();
 
   //TODO: place stone method
-  placeStone(BoardCoordiante coord, StoneColor color) {
-    if (color != StoneColor.none) {
-      return;
-    }
-    for (BoardCoordiante neig
-        in boardState[coord.returnMapCoordiante()].neighbors) {
-      //boardState[neig.returnMapCoordiante()]
-      //do this
-    }
-    ;
+  placeStone(BoardCoordiante coord) {
+    boardState[coord.returnMapCoordiante()] = TheStone(
+        coordinates: coord,
+        neighbors: null,
+        liberties: 0,
+        color: StoneColor.black);
+
+    //boardState[neig.returnMapCoordiante()]
+    //do this
+
     // Change board state to reflect presence of new stone
     // reduce liberties for all neighbours by 1
     // reduce own liberties for each placed stone on neighbour
@@ -54,6 +56,7 @@ class GameData extends ChangeNotifier {
     // remove all groups with zero liberties of opposite color
 
     changePlayer();
+    notifyListeners();
   }
 
   void changePlayer() {
@@ -75,9 +78,13 @@ class _GameState extends State<Game> {
     for (var x = 0; x < game.boardSize; x++) {
       for (var y = 0; y < game.boardSize; y++) {
         BoardCoordiante coord = BoardCoordiante(x, y);
-        game.boardState[coord.returnMapCoordiante()] = Stone(
+        List<BoardCoordiante> neibs =
+            CoordHelper.determineNeighbors(coord, game.boardSize);
+        game.boardState[coord.returnMapCoordiante()] = TheStone(
           coordinates: coord,
-          neighbors: CoordHelper.determineNeighbors(coord, game.boardSize),
+          liberties: neibs.length,
+          color: StoneColor.none,
+          neighbors: neibs,
         );
       }
     }
@@ -93,8 +100,6 @@ class _GameState extends State<Game> {
             boardState: game.boardState,
           ),
         ),
-        NewStone(),
-        NewStone2(),
       ]),
     );
   }
@@ -102,7 +107,7 @@ class _GameState extends State<Game> {
 
 class Grid extends StatelessWidget {
   final int gridSize;
-  final Map<String, Stone> boardState;
+  final Map<String, TheStone> boardState;
   Grid({@required this.gridSize, @required this.boardState});
   @override
   Widget build(BuildContext context) {
@@ -132,7 +137,7 @@ class Grid extends StatelessWidget {
     for (var i = 0; i <= items - 1; i++) {
       //TODO: Change to dynamic
       list.add(Cell(
-          stone:
+          stoneSpot:
               boardState[BoardCoordiante(rownumber, i).returnMapCoordiante()]));
     }
     return list;
@@ -140,8 +145,8 @@ class Grid extends StatelessWidget {
 }
 
 class Cell extends StatelessWidget {
-  final Stone stone;
-  Cell({this.stone});
+  final TheStone stoneSpot;
+  Cell({this.stoneSpot});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -149,7 +154,7 @@ class Cell extends StatelessWidget {
       child: Cross(
         //TODO: fix
         //orientation: CrossOrientation.right,
-        child: Padding(padding: const EdgeInsets.all(1.0), child: stone),
+        child: Padding(padding: const EdgeInsets.all(1.0), child: stoneSpot),
       ),
     );
   }
