@@ -36,11 +36,7 @@ class GameData extends ChangeNotifier {
 
   //TODO: place stone method
   placeStone(BoardCoordiante coord) {
-    boardState[coord.returnMapCoordiante()] = TheStone(
-        coordinates: coord,
-        neighbors: null,
-        liberties: 0,
-        color: StoneColor.black);
+    newBoardState[coord.returnMapCoordiante()].color = StoneColor.black;
 
     //boardState[neig.returnMapCoordiante()]
     //do this
@@ -80,7 +76,7 @@ class _GameState extends State<Game> {
         BoardCoordiante coord = BoardCoordiante(x, y);
         List<BoardCoordiante> neibs =
             CoordHelper.determineNeighbors(coord, game.boardSize);
-        game.boardState[coord.returnMapCoordiante()] = TheStone(
+        game.newBoardState[coord.returnMapCoordiante()] = StoneData(
           coordinates: coord,
           liberties: neibs.length,
           color: StoneColor.none,
@@ -89,7 +85,7 @@ class _GameState extends State<Game> {
       }
     }
     print("State:");
-    print(game.boardState);
+    print(game.newBoardState);
     //TODO: Container and column can be removed after testing
     return ChangeNotifierProvider<GameData>(
       create: (context) => game,
@@ -97,7 +93,7 @@ class _GameState extends State<Game> {
         Container(
           child: Grid(
             gridSize: game.boardSize,
-            boardState: game.boardState,
+            boardState: game.newBoardState,
           ),
         ),
       ]),
@@ -107,7 +103,7 @@ class _GameState extends State<Game> {
 
 class Grid extends StatelessWidget {
   final int gridSize;
-  final Map<String, TheStone> boardState;
+  final Map<String, StoneData> boardState;
   Grid({@required this.gridSize, @required this.boardState});
   @override
   Widget build(BuildContext context) {
@@ -134,11 +130,14 @@ class Grid extends StatelessWidget {
 
   List<Widget> generateRow({int items = 0, int rownumber = 0}) {
     List<Widget> list = new List();
+    StoneData currentStone;
     for (var i = 0; i <= items - 1; i++) {
-      //TODO: Change to dynamic
+      currentStone =
+          boardState[BoardCoordiante(rownumber, i).returnMapCoordiante()];
       list.add(Cell(
-          stoneSpot:
-              boardState[BoardCoordiante(rownumber, i).returnMapCoordiante()]));
+          stoneSpot: TheStone(
+              coordinates: currentStone.coordinates,
+              color: currentStone.color)));
     }
     return list;
   }

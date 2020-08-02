@@ -79,43 +79,23 @@ class OldNewStone extends OldStoneSpot {
 
 class TheStone extends StatelessWidget {
   final BoardCoordiante coordinates;
-  final List<BoardCoordiante> neighbors;
-  final int liberties;
   final StoneColor color;
 
-  TheStone(
-      {@required this.coordinates,
-      @required this.neighbors,
-      @required this.liberties,
-      @required this.color});
-
-  Color pickStoneColor(StoneColor col) {
-    switch (col) {
-      case StoneColor.black:
-        return Colors.black;
-        break;
-      case StoneColor.white:
-        return Colors.white;
-        break;
-      default:
-        return Colors.transparent;
-    }
-  }
+  TheStone({@required this.coordinates, @required this.color});
 
   @override
   Widget build(BuildContext context) {
     //GameData game = Provider.of<GameData>(context);
     //TODO: Exchange for more elegant sizing
     GameData game = Provider.of<GameData>(context);
-    print("The color is:");
-    print(color);
-    if (color == StoneColor.none) {
+    StoneColor activeColor =
+        game.newBoardState[coordinates.returnMapCoordiante()].color;
+    if (activeColor == StoneColor.none) {
       return SizedBox(
         height: 40,
         width: 40,
         child: FloatingActionButton(
-          backgroundColor: pickStoneColor(
-              game.boardState[coordinates.returnMapCoordiante()].color),
+          backgroundColor: Colors.transparent,
           //TODO: change second number to null
           elevation: (color == StoneColor.black) ? 4 : 4,
           onPressed: () {
@@ -123,7 +103,6 @@ class TheStone extends StatelessWidget {
             //if black is to play
             GameData gamedata = Provider.of<GameData>(context, listen: false);
             gamedata.placeStone(coordinates);
-            print("I ran");
           },
         ),
       );
@@ -132,7 +111,7 @@ class TheStone extends StatelessWidget {
         height: 40,
         width: 40,
         child: CircleAvatar(
-          backgroundImage: (color == StoneColor.black)
+          backgroundImage: (activeColor == StoneColor.black)
               ? AssetImage("assets/BlackStone.png")
               : AssetImage("assets/WhiteStone.png"),
         ),
