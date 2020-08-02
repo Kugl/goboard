@@ -6,6 +6,18 @@ import 'coordinateHelper.dart';
 
 enum StoneColor { black, white, none }
 
+class NewStone extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: CircleAvatar(
+        backgroundImage: AssetImage("assets/BlackStone.png"),
+      ),
+    );
+  }
+}
+
 class Stone extends StatefulWidget {
   final BoardCoordiante coordinates;
   final List<BoardCoordiante> neighbors;

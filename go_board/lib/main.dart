@@ -93,6 +93,8 @@ class _GameState extends State<Game> {
             boardState: game.boardState,
           ),
         ),
+        NewStone(),
+        NewStone2(),
       ]),
     );
   }
