@@ -33,9 +33,17 @@ class GameData extends ChangeNotifier {
   Map<String, Stone> boardState = Map<String, Stone>();
 
   //TODO: place stone method
-  placeStone() {
+  placeStone(BoardCoordiante coord, StoneColor color) {
+    if (color != StoneColor.none) {
+      return;
+    }
+    for (BoardCoordiante neig
+        in boardState[coord.returnMapCoordiante()].neighbors) {
+      //boardState[neig.returnMapCoordiante()]
+      //do this
+    }
+    ;
     // Change board state to reflect presence of new stone
-
     // reduce liberties for all neighbours by 1
     // reduce own liberties for each placed stone on neighbour
 
@@ -60,7 +68,6 @@ class Game extends StatefulWidget {
 }
 
 class _GameState extends State<Game> {
-  //TODO: Move to wehere it can be found
   GameData game = GameData();
 
   @override

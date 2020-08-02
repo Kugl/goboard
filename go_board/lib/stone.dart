@@ -17,10 +17,11 @@ class Stone extends StatefulWidget {
 }
 
 class _StoneState extends State<Stone> {
+  int liberties;
   StoneColor color;
-  List<BoardCoordiante> neighbors;
+  //List<BoardCoordiante> neighbors;
 
-  defineNeighbors() {}
+  reduceLiberties() {}
 
   Color pickStoneColor(StoneColor col) {
     switch (col) {
