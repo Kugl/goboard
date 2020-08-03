@@ -38,7 +38,7 @@ class Grid extends StatelessWidget {
       currentStone =
           boardState[BoardCoordiante(rownumber, i).returnMapCoordiante()];
       list.add(Cell(
-          stoneSpot: Stone(
+          stone: Stone(
         coordinates: currentStone.coordinates,
       )));
     }
@@ -47,16 +47,17 @@ class Grid extends StatelessWidget {
 }
 
 class Cell extends StatelessWidget {
-  final Stone stoneSpot;
-  Cell({this.stoneSpot});
+  final Stone stone;
+  Cell({this.stone});
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(),
+      //the Cross Widget draws the crosses on the board
       child: Cross(
         //TODO: fix
         //orientation: CrossOrientation.right,
-        child: Padding(padding: const EdgeInsets.all(1.0), child: stoneSpot),
+        child: Padding(padding: const EdgeInsets.all(1.0), child: stone),
       ),
     );
   }

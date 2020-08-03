@@ -12,6 +12,7 @@ class Game extends StatefulWidget {
 }
 
 class _GameState extends State<Game> {
+  //The Game Data object is where the logic is rooted
   GameData game = GameData();
 
   @override
@@ -32,6 +33,7 @@ class _GameState extends State<Game> {
     print("State:");
     print(game.boardState);
     //TODO: Container and column can be removed after testing
+    //Provides the Game data down the tree
     return ChangeNotifierProvider<GameData>(
       create: (context) => game,
       child: Column(children: [

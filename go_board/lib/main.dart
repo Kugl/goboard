@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
           title: Text("GoBoard"),
         ),
         body: Stack(children: [
+          //Root of the game which holds the data & logic and serves as the Provider. It also roots the Widget tree
           Game(),
         ]),
       ),
