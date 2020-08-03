@@ -19,19 +19,21 @@ class StoneData {
       @required this.color});
 }
 
-class TheStone extends StatelessWidget {
+class Stone extends StatelessWidget {
   final BoardCoordiante coordinates;
 
-  TheStone({@required this.coordinates});
+  Stone({@required this.coordinates});
 
   @override
   Widget build(BuildContext context) {
     //GameData game = Provider.of<GameData>(context);
-    //TODO: Exchange for more elegant sizing
+
     GameData game = Provider.of<GameData>(context);
+    //Listens to changes in the stones color
     StoneColor activeColor =
-        game.newBoardState[coordinates.returnMapCoordiante()].color;
+        game.boardState[coordinates.returnMapCoordiante()].color;
     if (activeColor == StoneColor.none) {
+      //TODO: Exchange for more elegant sizing
       return SizedBox(
         height: 40,
         width: 40,

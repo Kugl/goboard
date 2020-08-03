@@ -28,21 +28,32 @@ class MyApp extends StatelessWidget {
 }
 
 class GameData extends ChangeNotifier {
-  Map<String, StoneData> newBoardState = Map<String, StoneData>();
+  Map<String, StoneData> boardState = Map<String, StoneData>();
 
   bool blackToPlay = true;
   int boardSize = 9;
-  Map<String, TheStone> boardState = Map<String, TheStone>();
 
   //TODO: place stone method
   placeStone(BoardCoordiante coord) {
-    newBoardState[coord.returnMapCoordiante()].color = StoneColor.black;
-
-    //boardState[neig.returnMapCoordiante()]
-    //do this
-
+    StoneData theCurrentStone = boardState[coord.returnMapCoordiante()];
     // Change board state to reflect presence of new stone
+    if (blackToPlay) {
+      theCurrentStone.color = StoneColor.black;
+    } else {
+      theCurrentStone.color = StoneColor.white;
+    }
+
     // reduce liberties for all neighbours by 1
+    for (BoardCoordiante badNeighbor in theCurrentStone.neighbors) {
+      StoneData currentNeighbor = boardState[badNeighbor.returnMapCoordiante()];
+      print(currentNeighbor.liberties);
+
+      if (currentNeighbor.color != StoneColor.none) {
+        currentNeighbor.liberties--;
+      }
+      print(currentNeighbor.liberties);
+    }
+
     // reduce own liberties for each placed stone on neighbour
 
     //check for groups and add if possible
@@ -76,7 +87,7 @@ class _GameState extends State<Game> {
         BoardCoordiante coord = BoardCoordiante(x, y);
         List<BoardCoordiante> neibs =
             CoordHelper.determineNeighbors(coord, game.boardSize);
-        game.newBoardState[coord.returnMapCoordiante()] = StoneData(
+        game.boardState[coord.returnMapCoordiante()] = StoneData(
           coordinates: coord,
           liberties: neibs.length,
           color: StoneColor.none,
@@ -85,7 +96,7 @@ class _GameState extends State<Game> {
       }
     }
     print("State:");
-    print(game.newBoardState);
+    print(game.boardState);
     //TODO: Container and column can be removed after testing
     return ChangeNotifierProvider<GameData>(
       create: (context) => game,
@@ -93,7 +104,7 @@ class _GameState extends State<Game> {
         Container(
           child: Grid(
             gridSize: game.boardSize,
-            boardState: game.newBoardState,
+            boardState: game.boardState,
           ),
         ),
       ]),
@@ -135,7 +146,7 @@ class Grid extends StatelessWidget {
       currentStone =
           boardState[BoardCoordiante(rownumber, i).returnMapCoordiante()];
       list.add(Cell(
-          stoneSpot: TheStone(
+          stoneSpot: Stone(
         coordinates: currentStone.coordinates,
       )));
     }
@@ -144,7 +155,7 @@ class Grid extends StatelessWidget {
 }
 
 class Cell extends StatelessWidget {
-  final TheStone stoneSpot;
+  final Stone stoneSpot;
   Cell({this.stoneSpot});
   @override
   Widget build(BuildContext context) {
