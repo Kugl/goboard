@@ -39,6 +39,7 @@ class BoardCoordiante {
     return coord;
   }
 
+//TODO: add a variety to check this vs. others
   bool isEqual(BoardCoordiante coord1, BoardCoordiante coord2) {
     return (coord1.xcoordinate == coord2.ycoordinate &&
             coord1.ycoordinate == coord2.ycoordinate)
