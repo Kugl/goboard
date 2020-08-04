@@ -53,6 +53,7 @@ class Stone extends StatelessWidget {
         height: 40,
         width: 40,
         child: CircleAvatar(
+          backgroundColor: Colors.white,
           backgroundImage: (activeColor == StoneColor.black)
               ? AssetImage("assets/BlackStone.png")
               : AssetImage("assets/WhiteStone.png"),
