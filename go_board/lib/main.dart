@@ -17,9 +17,25 @@ class MyApp extends StatelessWidget {
           title: Text("GoBoard"),
         ),
         body: Stack(children: [
+          Background(),
           //Root of the game which holds the data & logic and serves as the Provider. It also roots the Widget tree
           Game(),
         ]),
+      ),
+    );
+  }
+}
+
+class Background extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Center(
+      child: Image.asset(
+        'assets/wood4.jpeg',
+        width: size.width,
+        height: size.height,
+        fit: BoxFit.fill,
       ),
     );
   }
