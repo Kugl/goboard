@@ -38,6 +38,13 @@ class BoardCoordiante {
         CoordHelper.nubmerToLetter(ycoordinate);
     return coord;
   }
+
+  bool isEqual(BoardCoordiante coord1, BoardCoordiante coord2) {
+    return (coord1.xcoordinate == coord2.ycoordinate &&
+            coord1.ycoordinate == coord2.ycoordinate)
+        ? true
+        : false;
+  }
 }
 
 class CoordHelper {

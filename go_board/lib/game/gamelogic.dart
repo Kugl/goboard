@@ -8,6 +8,26 @@ class GameData extends ChangeNotifier {
   bool blackToPlay = true;
   int boardSize = 9;
 
+  GameData() {
+    _populateBoard();
+  }
+
+  _populateBoard() {
+    for (var x = 0; x < this.boardSize; x++) {
+      for (var y = 0; y < this.boardSize; y++) {
+        BoardCoordiante coord = BoardCoordiante(x, y);
+        List<BoardCoordiante> neibs =
+            CoordHelper.determineNeighbors(coord, this.boardSize);
+        this.boardState[coord.returnMapCoordiante()] = StoneData(
+          coordinates: coord,
+          liberties: neibs.length,
+          color: StoneColor.none,
+          neighbors: neibs,
+        );
+      }
+    }
+  }
+
   //TODO: place stone method
   placeStone(BoardCoordiante coord) {
     StoneData theCurrentStone = boardState[coord.returnMapCoordiante()];
