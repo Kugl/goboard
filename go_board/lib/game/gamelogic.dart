@@ -4,6 +4,7 @@ import 'package:go_board/helpers/coordinateHelper.dart';
 
 class GameData extends ChangeNotifier {
   Map<String, StoneData> boardState = Map<String, StoneData>();
+  List<List<StoneData>> groups = [];
 
   bool blackToPlay = true;
   int boardSize = 9;
@@ -42,9 +43,15 @@ class GameData extends ChangeNotifier {
     for (BoardCoordiante badNeighbor in theCurrentStone.neighbors) {
       StoneData currentNeighbor = boardState[badNeighbor.returnMapCoordiante()];
       currentNeighbor.liberties--;
-    }
 
-    // reduce own liberties for each placed stone on neighbour
+      //TODO: Check if groups should be map?
+      if (currentNeighbor.color == theCurrentStone.color) {
+        //add to group if existing
+        for (List<StoneData> group in groups) {}
+        //add group
+        groups.add([currentNeighbor, theCurrentStone]);
+      }
+    }
 
     //check for groups and add if possible
     // form groups with all neighbours that are of same color
