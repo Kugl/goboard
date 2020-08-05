@@ -1,4 +1,6 @@
+import 'package:go_board/BoardVisu/stone.dart';
 import 'package:go_board/game/gamelogic.dart';
+import 'package:go_board/helpers/coordinateHelper.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -51,6 +53,30 @@ void main() {
       expect(
           testgame.boardState["ii"].neighbors[1].returnMapCoordiante() == "ih",
           true);
+    });
+  });
+
+  group('liberties', () {
+    GameData testgame = GameData();
+
+    test('Stone ab has two liberties before place', () {
+      expect(testgame.boardState["ab"].liberties, 2);
+    });
+
+    test('Stone ba has two liberties before place', () {
+      expect(testgame.boardState["ba"].liberties, 2);
+    });
+
+    test('Stone is palced on aa', () {
+      testgame.placeStone(BoardCoordiante(0, 0));
+      expect(testgame.boardState["aa"].color == StoneColor.black, true);
+    });
+    test('Stone ab has one liberties after place', () {
+      expect(testgame.boardState["ab"].liberties, 1);
+    });
+
+    test('Stone ba has one liberties after place', () {
+      expect(testgame.boardState["ba"].liberties, 1);
     });
   });
 }

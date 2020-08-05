@@ -41,12 +41,7 @@ class GameData extends ChangeNotifier {
     // reduce liberties for all neighbours by 1
     for (BoardCoordiante badNeighbor in theCurrentStone.neighbors) {
       StoneData currentNeighbor = boardState[badNeighbor.returnMapCoordiante()];
-      print(currentNeighbor.liberties);
-
-      if (currentNeighbor.color != StoneColor.none) {
-        currentNeighbor.liberties--;
-      }
-      print(currentNeighbor.liberties);
+      currentNeighbor.liberties--;
     }
 
     // reduce own liberties for each placed stone on neighbour

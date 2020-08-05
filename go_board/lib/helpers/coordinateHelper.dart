@@ -56,10 +56,10 @@ class CoordHelper {
   static List<BoardCoordiante> determineNeighbors(
       BoardCoordiante coord, int boardSize) {
     List<BoardCoordiante> list = List<BoardCoordiante>();
-    if (coord.xcoordinate > 1) {
+    if (coord.xcoordinate >= 1) {
       list.add(BoardCoordiante(coord.xcoordinate - 1, coord.ycoordinate));
     }
-    if (coord.ycoordinate > 1) {
+    if (coord.ycoordinate >= 1) {
       list.add(BoardCoordiante(coord.xcoordinate, coord.ycoordinate - 1));
     }
     if (coord.ycoordinate < boardSize - 1) {
