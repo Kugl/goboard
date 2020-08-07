@@ -2,9 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:go_board/BoardVisu/stone.dart';
 import 'package:go_board/helpers/coordinateHelper.dart';
 
+class Group {
+  List<StoneData> stones;
+  int number;
+
+  Group(StoneData stone) {
+    addStone(stone);
+  }
+
+  addStone(StoneData stone) {
+    stones.add(stone);
+  }
+
+  sumLiberties() {}
+
+  //merge the other group int this group and correct stone info
+  merge(Group otherGroup) {}
+
+  updateLiberties() {}
+}
+
 class GameData extends ChangeNotifier {
   Map<String, StoneData> boardState = Map<String, StoneData>();
-  List<List<StoneData>> groups = [];
+  //List<List<StoneData>> groups = [];
 
   bool blackToPlay = true;
   int boardSize = 9;
@@ -40,18 +60,34 @@ class GameData extends ChangeNotifier {
     }
 
     // reduce liberties for all neighbours by 1
+    bool merge = false;
+    //TODO: Change to enum & switch
+    bool noGroupableNeig = true;
+    Group currentGroup;
     for (BoardCoordiante badNeighbor in theCurrentStone.neighbors) {
       StoneData currentNeighbor = boardState[badNeighbor.returnMapCoordiante()];
       currentNeighbor.liberties--;
 
-      //TODO: Check if groups should be map?
-      if (currentNeighbor.color == theCurrentStone.color) {
-        //add to group if existing
-        for (List<StoneData> group in groups) {}
-        //add group
-        groups.add([currentNeighbor, theCurrentStone]);
+      if (theCurrentStone.color == currentNeighbor.color) {
+        if (merge == false) {
+          currentGroup = currentNeighbor.group;
+          currentGroup.addStone(theCurrentStone);
+          merge = true;
+          noGroupableNeig = false;
+        }
+        if (merge == true) {
+          currentGroup.merge(currentNeighbor.group);
+        }
       }
+      //no neigbour
     }
+
+    if (noGroupableNeig == true) {
+      currentGroup = Group(theCurrentStone);
+    }
+
+    theCurrentStone.group = currentGroup;
+    merge = false;
 
     //check for groups and add if possible
     // form groups with all neighbours that are of same color
@@ -65,6 +101,5 @@ class GameData extends ChangeNotifier {
 
   void changePlayer() {
     blackToPlay = !blackToPlay;
-    notifyListeners();
   }
 }

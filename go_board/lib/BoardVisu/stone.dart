@@ -10,6 +10,7 @@ class StoneData {
   List<BoardCoordiante> neighbors;
   int liberties;
   StoneColor color;
+  Group group;
 
   StoneData(
       {@required this.coordinates,
