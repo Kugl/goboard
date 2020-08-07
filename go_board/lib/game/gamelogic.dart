@@ -3,7 +3,7 @@ import 'package:go_board/BoardVisu/stone.dart';
 import 'package:go_board/helpers/coordinateHelper.dart';
 
 class Group {
-  List<StoneData> stones;
+  List<StoneData> stones = [];
   int number;
 
   Group(StoneData stone) {
