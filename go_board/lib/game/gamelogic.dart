@@ -17,7 +17,11 @@ class Group {
   sumLiberties() {}
 
   //merge the other group int this group and correct stone info
-  merge(Group otherGroup) {}
+  merge(Group otherGroup) {
+    for (StoneData stone in otherGroup.stones) {
+      stone.group = this;
+    }
+  }
 
   updateLiberties() {}
 }
