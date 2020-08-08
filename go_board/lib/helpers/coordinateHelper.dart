@@ -46,6 +46,11 @@ class BoardCoordiante {
         ? true
         : false;
   }
+
+  printCoord() {
+    print(
+        "Coordiantes " + xcoordinate.toString() + " " + ycoordinate.toString());
+  }
 }
 
 class CoordHelper {

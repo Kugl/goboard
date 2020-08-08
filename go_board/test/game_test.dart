@@ -29,11 +29,11 @@ void main() {
     });
 
     test('Stone ab has two liberties', () {
-      expect(testgame.boardState["ab"].liberties, 3);
+      expect(testgame.boardState["ab"].freeNeighbors.length, 3);
     });
 
     test('Stone ab has two liberties', () {
-      expect(testgame.boardState["ba"].liberties, 3);
+      expect(testgame.boardState["ba"].freeNeighbors.length, 3);
     });
   });
   //Tests for 9x9
@@ -60,11 +60,11 @@ void main() {
     GameData testgame = GameData();
 
     test('Stone ab has two liberties before place', () {
-      expect(testgame.boardState["ab"].liberties, 3);
+      expect(testgame.boardState["ab"].freeNeighbors.length, 3);
     });
 
     test('Stone ba has two liberties before place', () {
-      expect(testgame.boardState["ba"].liberties, 3);
+      expect(testgame.boardState["ba"].freeNeighbors.length, 3);
     });
 
     test('Stone is palced on aa', () {
@@ -72,11 +72,12 @@ void main() {
       expect(testgame.boardState["aa"].color == StoneColor.black, true);
     });
     test('Stone ab has two liberties after place', () {
-      expect(testgame.boardState["ab"].liberties, 2);
+      print(testgame.boardState["ab"].freeNeighbors);
+      expect(testgame.boardState["ab"].freeNeighbors.length, 2);
     });
 
     test('Stone ba has two liberties after place', () {
-      expect(testgame.boardState["ba"].liberties, 2);
+      expect(testgame.boardState["ba"].freeNeighbors.length, 2);
     });
   });
 
@@ -87,10 +88,10 @@ void main() {
     testgame.placeStone(BoardCoordiante(0, 1));
 
     test('Stone aa has one liberties after place', () {
-      expect(testgame.boardState["aa"].liberties, 1);
+      expect(testgame.boardState["aa"].freeNeighbors.length, 1);
     });
     test('Stone ab has one liberties after place', () {
-      expect(testgame.boardState["ab"].liberties, 1);
+      expect(testgame.boardState["ab"].freeNeighbors.length, 1);
     });
 
     test('White group length is correct', () {
@@ -115,10 +116,10 @@ void main() {
     testgame.placeStone(BoardCoordiante(5, 5));
 
     test('Stone aa has one liberties after place', () {
-      expect(testgame.boardState["aa"].liberties, 1);
+      expect(testgame.boardState["aa"].freeNeighbors.length, 1);
     });
     test('Stone ab has zero liberties after place', () {
-      expect(testgame.boardState["ab"].liberties, 0);
+      expect(testgame.boardState["ab"].freeNeighbors.length, 0);
     });
     test('Single stone has a group', () {
       expect(testgame.boardState["ff"].group != null, true);
@@ -153,14 +154,12 @@ void main() {
       expect(whitegroup.stones[2].coordinates.returnMapCoordiante(), "cc");
     });
 
-//The stones have more liberties then the group has in reality this equals out upon reaching zero
     test('White Libertiy sum is correct', () {
       Group whitegroup = testgame.boardState["bb"].group;
-      expect(whitegroup.stones[0].liberties, 2);
-      expect(whitegroup.stones[1].liberties, 1);
-      expect(whitegroup.stones[2].liberties, 3);
-      print(whitegroup.sumLiberties());
-      expect(whitegroup.sumLiberties().length, 6);
+      expect(whitegroup.stones[0].freeNeighbors.length, 2);
+      expect(whitegroup.stones[1].freeNeighbors.length, 1);
+      expect(whitegroup.stones[2].freeNeighbors.length, 3);
+      expect(whitegroup.sumLiberties().length, 5);
     });
   });
   group('capturing', () {
@@ -175,22 +174,22 @@ void main() {
     testgame.placeStone(BoardCoordiante(0, 1));
 
     test('Stone aa has one liberties after place', () {
-      expect(testgame.boardState["aa"].liberties, 1);
+      expect(testgame.boardState["aa"].freeNeighbors.length, 1);
     });
     test('Stone da has three liberties after place', () {
-      expect(testgame.boardState["da"].liberties, 3);
+      expect(testgame.boardState["da"].freeNeighbors.length, 3);
     });
 
     test('Stone bb has two liberties after place', () {
-      expect(testgame.boardState["bb"].liberties, 2);
+      expect(testgame.boardState["bb"].freeNeighbors.length, 2);
     });
 
     test('Stone cb has three liberties after place', () {
-      expect(testgame.boardState["cb"].liberties, 3);
+      expect(testgame.boardState["cb"].freeNeighbors.length, 3);
     });
 
     test('Stone ab has one liberties after place', () {
-      expect(testgame.boardState["ab"].liberties, 1);
+      expect(testgame.boardState["ab"].freeNeighbors.length, 1);
     });
 
     test('Color bb is black', () {
@@ -214,14 +213,14 @@ void main() {
     testgame.placeStone(BoardCoordiante(0, 1));
 
     test('Stone aa has one liberties after place', () {
-      expect(testgame.boardState["aa"].liberties, 1);
+      expect(testgame.boardState["aa"].freeNeighbors.length, 1);
     });
     test('Stone ab has three liberties after place', () {
-      expect(testgame.boardState["ab"].liberties, 1);
+      expect(testgame.boardState["ab"].freeNeighbors.length, 1);
     });
 
     test('Stone bc has three liberties after place', () {
-      expect(testgame.boardState["bc"].liberties, 3);
+      expect(testgame.boardState["bc"].freeNeighbors.length, 3);
     });
 
     test('Color ab is white', () {

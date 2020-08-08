@@ -19,9 +19,7 @@ class StoneBackup {
 class StoneData {
   final BoardCoordiante coordinates;
   final List<BoardCoordiante> neighbors;
-  int liberties;
-  //TODO: refactor to remove liberties
-  List<BoardCoordiante> freeNeighbors = [];
+  Set<String> freeNeighbors = {};
   StoneColor color;
   //is only manipulated  via the Group object
   Group group = Group.empty();
@@ -29,10 +27,9 @@ class StoneData {
   StoneData(
       {@required this.coordinates,
       @required this.neighbors,
-      @required this.liberties,
       @required this.color}) {
     for (BoardCoordiante free in neighbors) {
-      freeNeighbors.add(free);
+      freeNeighbors.add(free.returnMapCoordiante());
     }
   }
 
@@ -67,25 +64,25 @@ class StoneData {
     }
   }
 
-  recalculateLiberties(Map<String, StoneData> boardState) {
-    this.liberties = 0;
+/*   _recalculateLiberties(Map<String, StoneData> boardState) {
+    this._liberties = 0;
     for (BoardCoordiante coord in neighbors) {
       if (boardState[coord.returnMapCoordiante()].color == StoneColor.none) {
-        this.liberties++;
+        this._liberties++;
       }
     }
     recalculateFreeNeigbors(boardState);
-  }
+  } */
 
   recalculateFreeNeigbors(Map<String, StoneData> boardState) {
-    this.freeNeighbors = [];
+    this.freeNeighbors = {};
     for (BoardCoordiante coord in neighbors) {
       StoneData neib = boardState[coord.returnMapCoordiante()];
       if (neib.color == StoneColor.none) {
-        this.freeNeighbors.add(neib.coordinates);
+        this.freeNeighbors.add(neib.coordinates.returnMapCoordiante());
       }
     }
-    recalculateLiberties(boardState);
+    //_recalculateLiberties(boardState);
   }
 
   kill(Map<String, StoneData> boardState) {
@@ -104,7 +101,9 @@ class StoneData {
 
   _addLibertiesforNeighbors(Map<String, StoneData> boardState) {
     for (BoardCoordiante coord in neighbors) {
-      boardState[coord.returnMapCoordiante()].liberties++;
+      boardState[coord.returnMapCoordiante()]
+          .freeNeighbors
+          .add(coord.returnMapCoordiante());
     }
   }
 }
