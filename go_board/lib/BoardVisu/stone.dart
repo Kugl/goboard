@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 enum StoneColor { black, white, none }
 
 class StoneData {
-  BoardCoordiante coordinates;
-  List<BoardCoordiante> neighbors;
+  final BoardCoordiante coordinates;
+  final List<BoardCoordiante> neighbors;
   int liberties;
   StoneColor color;
   //is only manipulated  via the Group object
