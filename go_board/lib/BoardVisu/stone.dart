@@ -52,9 +52,16 @@ class StoneData {
     }
   }
 
-  kill() {
+  _addLibertiesforNeighbors(Map<String, StoneData> boardState) {
+    for (BoardCoordiante coord in neighbors) {
+      boardState[coord.returnMapCoordiante()].liberties++;
+    }
+  }
+
+  kill(Map<String, StoneData> boardState) {
     _uncolor();
     _resetGroup();
+    _addLibertiesforNeighbors(boardState);
   }
 }
 

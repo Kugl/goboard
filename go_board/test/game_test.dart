@@ -117,7 +117,7 @@ void main() {
     test('Stone aa has one liberties after place', () {
       expect(testgame.boardState["aa"].liberties, 1);
     });
-    test('Stone aa has one liberties after place', () {
+    test('Stone ab has zero liberties after place', () {
       expect(testgame.boardState["ab"].liberties, 0);
     });
     test('Single stone has a group', () {

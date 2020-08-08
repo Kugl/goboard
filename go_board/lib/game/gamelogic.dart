@@ -38,7 +38,7 @@ class Group {
 
   killGroup(Map<String, StoneData> boardState) {
     for (StoneData stone in this.stones) {
-      stone.kill();
+      stone.kill(boardState);
     }
     for (StoneData stone in this.stones) {
       stone.recalculateLiberties(boardState);
