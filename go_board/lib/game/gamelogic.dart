@@ -75,11 +75,29 @@ class GameData extends ChangeNotifier {
     }
   }
 
+  bool _checkIfPlacementIsLegal(StoneData theCurrentStone) {
+    bool moveLegal = true;
+    if (theCurrentStone.liberties == 0) {
+      moveLegal = false;
+      StoneColor targetCol = _calculateTargetcolor();
+      for (BoardCoordiante badNeighbor in theCurrentStone.neighbors) {
+        StoneData currentNeighbor =
+            boardState[badNeighbor.returnMapCoordiante()];
+        if (targetCol == currentNeighbor.color) {
+          if (currentNeighbor.group.sumLiberties() > 1) {
+            moveLegal = true;
+          }
+        }
+      } // for
+    }
+    return moveLegal;
+  }
+
   placeStone(BoardCoordiante coord) {
     StoneData theCurrentStone = boardState[coord.returnMapCoordiante()];
 
     //prevent sucidal moves
-    if (theCurrentStone.liberties == 0) {
+    if (!_checkIfPlacementIsLegal(theCurrentStone)) {
       return;
     }
 
@@ -141,11 +159,15 @@ class GameData extends ChangeNotifier {
     blackToPlay = !blackToPlay;
   }
 
-  void _colorStone(StoneData theCurrentStone) {
+  StoneColor _calculateTargetcolor() {
     if (blackToPlay) {
-      theCurrentStone.fillOut(StoneColor.black);
+      return StoneColor.black;
     } else {
-      theCurrentStone.fillOut(StoneColor.white);
+      return StoneColor.white;
     }
+  }
+
+  void _colorStone(StoneData theCurrentStone) {
+    theCurrentStone.fillOut(_calculateTargetcolor());
   }
 }

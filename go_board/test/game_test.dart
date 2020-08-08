@@ -203,4 +203,32 @@ void main() {
       expect(testgame.boardState["aa"].color == StoneColor.black, true);
     });
   });
+  group('More capturing', () {
+    GameData testgame = GameData();
+    testgame.placeStone(BoardCoordiante(0, 0));
+    testgame.placeStone(BoardCoordiante(1, 2));
+    testgame.placeStone(BoardCoordiante(1, 1));
+    testgame.placeStone(BoardCoordiante(0, 3));
+    testgame.placeStone(BoardCoordiante(0, 2));
+    testgame.placeStone(BoardCoordiante(0, 1));
+
+    test('Stone aa has one liberties after place', () {
+      expect(testgame.boardState["aa"].liberties, 1);
+    });
+    test('Stone ab has three liberties after place', () {
+      expect(testgame.boardState["ab"].liberties, 1);
+    });
+
+    test('Stone bc has three liberties after place', () {
+      expect(testgame.boardState["bc"].liberties, 3);
+    });
+
+    test('Color ab is white', () {
+      expect(testgame.boardState["ab"].color == StoneColor.white, true);
+    });
+
+    test('Color ac is none', () {
+      expect(testgame.boardState["ac"].color == StoneColor.none, true);
+    });
+  });
 }

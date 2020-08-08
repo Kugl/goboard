@@ -35,12 +35,18 @@ class StoneData {
     }
   }
 
-  _uncolor() {
-    this.color = StoneColor.none;
-  }
-
-  _resetGroup() {
-    this.group = null;
+  bool surroundedByFriends(Map<String, StoneData> boardState) {
+    int friendcount;
+    for (BoardCoordiante coord in neighbors) {
+      if (boardState[coord.returnMapCoordiante()].color == this.color) {
+        friendcount++;
+      }
+    }
+    if (friendcount > 0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   recalculateLiberties(Map<String, StoneData> boardState) {
@@ -52,16 +58,24 @@ class StoneData {
     }
   }
 
-  _addLibertiesforNeighbors(Map<String, StoneData> boardState) {
-    for (BoardCoordiante coord in neighbors) {
-      boardState[coord.returnMapCoordiante()].liberties++;
-    }
-  }
-
   kill(Map<String, StoneData> boardState) {
     _uncolor();
     _resetGroup();
     _addLibertiesforNeighbors(boardState);
+  }
+
+  _uncolor() {
+    this.color = StoneColor.none;
+  }
+
+  _resetGroup() {
+    this.group = null;
+  }
+
+  _addLibertiesforNeighbors(Map<String, StoneData> boardState) {
+    for (BoardCoordiante coord in neighbors) {
+      boardState[coord.returnMapCoordiante()].liberties++;
+    }
   }
 }
 
