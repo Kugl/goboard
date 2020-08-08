@@ -143,7 +143,7 @@ void main() {
 
     test('Libertiy sum is correct', () {
       Group blackgroup = testgame.boardState["aa"].group;
-      expect(blackgroup.sumLiberties(), 3);
+      expect(blackgroup.sumLiberties().length, 3);
     });
 
     test('White Coordinates are correct', () {
@@ -159,7 +159,8 @@ void main() {
       expect(whitegroup.stones[0].liberties, 2);
       expect(whitegroup.stones[1].liberties, 1);
       expect(whitegroup.stones[2].liberties, 3);
-      expect(whitegroup.sumLiberties(), 6);
+      print(whitegroup.sumLiberties());
+      expect(whitegroup.sumLiberties().length, 6);
     });
   });
   group('capturing', () {

@@ -5,19 +5,36 @@ import 'package:provider/provider.dart';
 
 enum StoneColor { black, white, none }
 
+class StoneBackup {
+  int liberties;
+  StoneColor color;
+  List<StoneData> groupStones;
+
+  StoneBackup(
+      {@required this.color,
+      @required this.groupStones,
+      @required this.liberties});
+}
+
 class StoneData {
   final BoardCoordiante coordinates;
   final List<BoardCoordiante> neighbors;
   int liberties;
+  //TODO: refactor to remove liberties
+  List<BoardCoordiante> freeNeighbors = [];
   StoneColor color;
   //is only manipulated  via the Group object
-  Group group;
+  Group group = Group.empty();
 
   StoneData(
       {@required this.coordinates,
       @required this.neighbors,
       @required this.liberties,
-      @required this.color});
+      @required this.color}) {
+    for (BoardCoordiante free in neighbors) {
+      freeNeighbors.add(free);
+    }
+  }
 
   fillOut(StoneColor col) {
     switch (col) {
@@ -32,6 +49,7 @@ class StoneData {
         }
         break;
       default:
+        return;
     }
   }
 
@@ -56,6 +74,18 @@ class StoneData {
         this.liberties++;
       }
     }
+    recalculateFreeNeigbors(boardState);
+  }
+
+  recalculateFreeNeigbors(Map<String, StoneData> boardState) {
+    this.freeNeighbors = [];
+    for (BoardCoordiante coord in neighbors) {
+      StoneData neib = boardState[coord.returnMapCoordiante()];
+      if (neib.color == StoneColor.none) {
+        this.freeNeighbors.add(neib.coordinates);
+      }
+    }
+    recalculateLiberties(boardState);
   }
 
   kill(Map<String, StoneData> boardState) {
