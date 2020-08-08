@@ -4,7 +4,6 @@ import 'package:go_board/helpers/coordinateHelper.dart';
 
 class Group {
   List<StoneData> stones = [];
-  int number;
 
   Group(StoneData stone) {
     addStone(stone);
@@ -36,8 +35,6 @@ class Group {
       addStone(stone);
     }
   }
-
-  updateLiberties() {}
 }
 
 enum Stage { ungrouped, grouped }
