@@ -40,6 +40,8 @@ class Group {
   updateLiberties() {}
 }
 
+enum Stage { ungrouped, grouped }
+
 class GameData extends ChangeNotifier {
   Map<String, StoneData> boardState = Map<String, StoneData>();
   //List<List<StoneData>> groups = [];
@@ -78,15 +80,34 @@ class GameData extends ChangeNotifier {
     }
 
     // reduce liberties for all neighbours by 1
-    bool merge = false;
     //TODO: Change to enum & switch
     bool noGroupableNeig = true;
     Group currentGroup;
+    Stage stage = Stage.ungrouped;
     for (BoardCoordiante badNeighbor in theCurrentStone.neighbors) {
       StoneData currentNeighbor = boardState[badNeighbor.returnMapCoordiante()];
       currentNeighbor.liberties--;
-
       if (theCurrentStone.color == currentNeighbor.color) {
+        switch (stage) {
+          case Stage.ungrouped:
+            {
+              currentGroup = currentNeighbor.group;
+              currentGroup.addStone(theCurrentStone);
+              noGroupableNeig = false;
+              stage = Stage.grouped;
+            }
+            break;
+          case Stage.grouped:
+            {
+              currentGroup.merge(currentNeighbor.group);
+            }
+            break;
+        }
+      }
+      if (noGroupableNeig == true) {
+        currentGroup = Group(theCurrentStone);
+      }
+/*       if (theCurrentStone.color == currentNeighbor.color) {
         if (merge == true) {
           currentGroup.merge(currentNeighbor.group);
         }
@@ -96,16 +117,9 @@ class GameData extends ChangeNotifier {
           merge = true;
           noGroupableNeig = false;
         }
-      }
+      } */
       //no neigbour
     }
-
-    if (noGroupableNeig == true) {
-      currentGroup = Group(theCurrentStone);
-    }
-
-    theCurrentStone.group = currentGroup;
-    merge = false;
 
     //check for groups and add if possible
     // form groups with all neighbours that are of same color
