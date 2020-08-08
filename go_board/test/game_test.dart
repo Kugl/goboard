@@ -162,4 +162,45 @@ void main() {
       expect(whitegroup.sumLiberties(), 6);
     });
   });
+  group('capturing', () {
+    GameData testgame = GameData();
+    testgame.placeStone(BoardCoordiante(0, 0));
+    testgame.placeStone(BoardCoordiante(1, 0));
+    testgame.placeStone(BoardCoordiante(1, 1));
+    testgame.placeStone(BoardCoordiante(2, 0));
+    testgame.placeStone(BoardCoordiante(2, 1));
+    testgame.placeStone(BoardCoordiante(5, 5));
+    testgame.placeStone(BoardCoordiante(3, 0));
+    testgame.placeStone(BoardCoordiante(0, 1));
+
+    test('Stone aa has one liberties after place', () {
+      expect(testgame.boardState["aa"].liberties, 1);
+    });
+    test('Stone da has three liberties after place', () {
+      expect(testgame.boardState["da"].liberties, 3);
+    });
+
+    test('Stone bb has two liberties after place', () {
+      expect(testgame.boardState["bb"].liberties, 2);
+    });
+
+    test('Stone cb has three liberties after place', () {
+      expect(testgame.boardState["cb"].liberties, 3);
+    });
+
+    test('Stone ab has one liberties after place', () {
+      expect(testgame.boardState["ab"].liberties, 1);
+    });
+
+    test('Color bb is black', () {
+      expect(testgame.boardState["bb"].color == StoneColor.black, true);
+    });
+
+    test('Color ba is none', () {
+      expect(testgame.boardState["ba"].color == StoneColor.none, true);
+    });
+    test('Color aa is black', () {
+      expect(testgame.boardState["aa"].color == StoneColor.black, true);
+    });
+  });
 }

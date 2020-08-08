@@ -35,8 +35,26 @@ class StoneData {
     }
   }
 
-  remove() {
+  _uncolor() {
     this.color = StoneColor.none;
+  }
+
+  _resetGroup() {
+    this.group = null;
+  }
+
+  recalculateLiberties(Map<String, StoneData> boardState) {
+    this.liberties = 0;
+    for (BoardCoordiante coord in neighbors) {
+      if (boardState[coord.returnMapCoordiante()].color == StoneColor.none) {
+        this.liberties++;
+      }
+    }
+  }
+
+  kill() {
+    _uncolor();
+    _resetGroup();
   }
 }
 

@@ -35,6 +35,15 @@ class Group {
       addStone(stone);
     }
   }
+
+  killGroup(Map<String, StoneData> boardState) {
+    for (StoneData stone in this.stones) {
+      stone.kill();
+    }
+    for (StoneData stone in this.stones) {
+      stone.recalculateLiberties(boardState);
+    }
+  }
 }
 
 enum Stage { ungrouped, grouped }
@@ -66,15 +75,16 @@ class GameData extends ChangeNotifier {
     }
   }
 
-  //TODO: place stone method
   placeStone(BoardCoordiante coord) {
     StoneData theCurrentStone = boardState[coord.returnMapCoordiante()];
-    // Change board state to reflect presence of new stone
-    if (blackToPlay) {
-      theCurrentStone.fillOut(StoneColor.black);
-    } else {
-      theCurrentStone.fillOut(StoneColor.white);
+
+    //prevent sucidal moves
+    if (theCurrentStone.liberties == 0) {
+      return;
     }
+
+    // Change board state to reflect presence of new stone
+    _colorStone(theCurrentStone);
 
     Group currentGroup;
     Stage stage = Stage.ungrouped;
@@ -106,17 +116,36 @@ class GameData extends ChangeNotifier {
       currentGroup = Group(theCurrentStone);
     }
 
+    for (BoardCoordiante badNeighbor in theCurrentStone.neighbors) {
+      StoneData currentNeighbor = boardState[badNeighbor.returnMapCoordiante()];
+      //deal with enenmies
+      if (theCurrentStone.color != currentNeighbor.color &&
+          currentNeighbor.color != StoneColor.none) {
+        if (currentNeighbor.group.sumLiberties() == 0) {
+          currentNeighbor.group.killGroup(boardState);
+        }
+      }
+    } // for
+
     //check for groups and add if possible
     // form groups with all neighbours that are of same color
     // adjust group liberties
 
     // remove all groups with zero liberties of opposite color
 
-    changePlayer();
+    _changePlayer();
     notifyListeners();
   }
 
-  void changePlayer() {
+  void _changePlayer() {
     blackToPlay = !blackToPlay;
+  }
+
+  void _colorStone(StoneData theCurrentStone) {
+    if (blackToPlay) {
+      theCurrentStone.fillOut(StoneColor.black);
+    } else {
+      theCurrentStone.fillOut(StoneColor.white);
+    }
   }
 }
