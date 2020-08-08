@@ -74,26 +74,25 @@ class GameData extends ChangeNotifier {
     StoneData theCurrentStone = boardState[coord.returnMapCoordiante()];
     // Change board state to reflect presence of new stone
     if (blackToPlay) {
-      theCurrentStone.color = StoneColor.black;
+      theCurrentStone.fillOut(StoneColor.black);
     } else {
-      theCurrentStone.color = StoneColor.white;
+      theCurrentStone.fillOut(StoneColor.white);
     }
 
-    // reduce liberties for all neighbours by 1
-    //TODO: Change to enum & switch
-    bool noGroupableNeig = true;
     Group currentGroup;
     Stage stage = Stage.ungrouped;
+    //iterate neighbours
     for (BoardCoordiante badNeighbor in theCurrentStone.neighbors) {
       StoneData currentNeighbor = boardState[badNeighbor.returnMapCoordiante()];
+      // reduce liberties for all neighbours by 1
       currentNeighbor.liberties--;
+      // check for friendlies group up if possible
       if (theCurrentStone.color == currentNeighbor.color) {
         switch (stage) {
           case Stage.ungrouped:
             {
               currentGroup = currentNeighbor.group;
               currentGroup.addStone(theCurrentStone);
-              noGroupableNeig = false;
               stage = Stage.grouped;
             }
             break;
@@ -104,21 +103,10 @@ class GameData extends ChangeNotifier {
             break;
         }
       }
-      if (noGroupableNeig == true) {
-        currentGroup = Group(theCurrentStone);
-      }
-/*       if (theCurrentStone.color == currentNeighbor.color) {
-        if (merge == true) {
-          currentGroup.merge(currentNeighbor.group);
-        }
-        if (merge == false) {
-          currentGroup = currentNeighbor.group;
-          currentGroup.addStone(theCurrentStone);
-          merge = true;
-          noGroupableNeig = false;
-        }
-      } */
-      //no neigbour
+    } // for
+    //If tehstone wasent grouped up it is a gtoup of one
+    if (stage != Stage.grouped) {
+      currentGroup = Group(theCurrentStone);
     }
 
     //check for groups and add if possible

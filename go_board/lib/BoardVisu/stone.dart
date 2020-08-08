@@ -18,6 +18,26 @@ class StoneData {
       @required this.neighbors,
       @required this.liberties,
       @required this.color});
+
+  fillOut(StoneColor col) {
+    switch (col) {
+      case StoneColor.white:
+        {
+          this.color = StoneColor.white;
+        }
+        break;
+      case StoneColor.black:
+        {
+          this.color = StoneColor.black;
+        }
+        break;
+      default:
+    }
+  }
+
+  remove() {
+    this.color = StoneColor.none;
+  }
 }
 
 class Stone extends StatelessWidget {

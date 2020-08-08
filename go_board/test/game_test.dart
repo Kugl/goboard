@@ -112,12 +112,16 @@ void main() {
     testgame.placeStone(BoardCoordiante(0, 3));
     testgame.placeStone(BoardCoordiante(2, 2));
     testgame.placeStone(BoardCoordiante(0, 2));
+    testgame.placeStone(BoardCoordiante(5, 5));
 
     test('Stone aa has one liberties after place', () {
       expect(testgame.boardState["aa"].liberties, 1);
     });
     test('Stone aa has one liberties after place', () {
       expect(testgame.boardState["ab"].liberties, 0);
+    });
+    test('Single stone has a group', () {
+      expect(testgame.boardState["ff"].group != null, true);
     });
 
     test('White group length is correct', () {
