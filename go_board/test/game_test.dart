@@ -231,4 +231,15 @@ void main() {
       expect(testgame.boardState["ac"].color == StoneColor.none, true);
     });
   });
+
+  group('Ko', () {
+    GameData testgame = GameData();
+    testgame.placeStone(BoardCoordiante(0, 0));
+    testgame.placeStone(BoardCoordiante(0, 3));
+    testgame.placeStone(BoardCoordiante(1, 1));
+    testgame.placeStone(BoardCoordiante(1, 2));
+    testgame.placeStone(BoardCoordiante(0, 2));
+    testgame.placeStone(BoardCoordiante(0, 1));
+    //TODO: add Ko trigger move
+  });
 }
