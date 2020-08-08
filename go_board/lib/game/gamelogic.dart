@@ -10,16 +10,30 @@ class Group {
     addStone(stone);
   }
 
+//adds stoneto group and palces reference
   addStone(StoneData stone) {
     stones.add(stone);
+    stone.group = this;
   }
 
-  sumLiberties() {}
+  int sumLiberties() {
+    int sumLib = 0;
+    for (StoneData stone in stones) {
+      sumLib += stone.liberties;
+    }
+    return sumLib;
+  }
 
   //merge the other group int this group and correct stone info
   merge(Group otherGroup) {
+    List<StoneData> stonecollector = [];
     for (StoneData stone in otherGroup.stones) {
-      stone.group = this;
+      //this.stones.add(stone);
+      stonecollector.add(stone);
+      //addStone(stone);
+    }
+    for (StoneData stone in stonecollector) {
+      addStone(stone);
     }
   }
 
@@ -73,14 +87,14 @@ class GameData extends ChangeNotifier {
       currentNeighbor.liberties--;
 
       if (theCurrentStone.color == currentNeighbor.color) {
+        if (merge == true) {
+          currentGroup.merge(currentNeighbor.group);
+        }
         if (merge == false) {
           currentGroup = currentNeighbor.group;
           currentGroup.addStone(theCurrentStone);
           merge = true;
           noGroupableNeig = false;
-        }
-        if (merge == true) {
-          currentGroup.merge(currentNeighbor.group);
         }
       }
       //no neigbour

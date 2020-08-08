@@ -29,11 +29,11 @@ void main() {
     });
 
     test('Stone ab has two liberties', () {
-      expect(testgame.boardState["ab"].liberties == 2, true);
+      expect(testgame.boardState["ab"].liberties, 3);
     });
 
     test('Stone ab has two liberties', () {
-      expect(testgame.boardState["ba"].liberties == 2, true);
+      expect(testgame.boardState["ba"].liberties, 3);
     });
   });
   //Tests for 9x9
@@ -60,23 +60,102 @@ void main() {
     GameData testgame = GameData();
 
     test('Stone ab has two liberties before place', () {
-      expect(testgame.boardState["ab"].liberties, 2);
+      expect(testgame.boardState["ab"].liberties, 3);
     });
 
     test('Stone ba has two liberties before place', () {
-      expect(testgame.boardState["ba"].liberties, 2);
+      expect(testgame.boardState["ba"].liberties, 3);
     });
 
     test('Stone is palced on aa', () {
       testgame.placeStone(BoardCoordiante(0, 0));
       expect(testgame.boardState["aa"].color == StoneColor.black, true);
     });
+    test('Stone ab has two liberties after place', () {
+      expect(testgame.boardState["ab"].liberties, 2);
+    });
+
+    test('Stone ba has two liberties after place', () {
+      expect(testgame.boardState["ba"].liberties, 2);
+    });
+  });
+
+  group('smallGroups', () {
+    GameData testgame = GameData();
+    testgame.placeStone(BoardCoordiante(0, 0));
+    testgame.placeStone(BoardCoordiante(1, 1));
+    testgame.placeStone(BoardCoordiante(0, 1));
+
+    test('Stone aa has one liberties after place', () {
+      expect(testgame.boardState["aa"].liberties, 1);
+    });
     test('Stone ab has one liberties after place', () {
       expect(testgame.boardState["ab"].liberties, 1);
     });
 
-    test('Stone ba has one liberties after place', () {
-      expect(testgame.boardState["ba"].liberties, 1);
+    test('White group length is correct', () {
+      Group whitegroup = testgame.boardState["bb"].group;
+      expect(whitegroup.stones.length, 1);
+    });
+
+    test('Black group length is correct', () {
+      Group whitegroup = testgame.boardState["aa"].group;
+      expect(whitegroup.stones.length, 2);
+    });
+  });
+  group('Groups', () {
+    GameData testgame = GameData();
+    testgame.placeStone(BoardCoordiante(0, 0));
+    testgame.placeStone(BoardCoordiante(1, 1));
+    testgame.placeStone(BoardCoordiante(0, 1));
+    testgame.placeStone(BoardCoordiante(1, 2));
+    testgame.placeStone(BoardCoordiante(0, 3));
+    testgame.placeStone(BoardCoordiante(2, 2));
+    testgame.placeStone(BoardCoordiante(0, 2));
+
+    test('Stone aa has one liberties after place', () {
+      expect(testgame.boardState["aa"].liberties, 1);
+    });
+    test('Stone aa has one liberties after place', () {
+      expect(testgame.boardState["ab"].liberties, 0);
+    });
+
+    test('White group length is correct', () {
+      Group whitegroup = testgame.boardState["bb"].group;
+      expect(whitegroup.stones.length, 3);
+    });
+
+    test('Black group length is correct', () {
+      Group blackgroup = testgame.boardState["aa"].group;
+      expect(blackgroup.stones.length, 4);
+    });
+    test('Coordinates are correct', () {
+      Group blackgroup = testgame.boardState["aa"].group;
+      expect(blackgroup.stones[0].coordinates.returnMapCoordiante(), "aa");
+      expect(blackgroup.stones[1].coordinates.returnMapCoordiante(), "ab");
+      expect(blackgroup.stones[2].coordinates.returnMapCoordiante(), "ac");
+      expect(blackgroup.stones[3].coordinates.returnMapCoordiante(), "ad");
+    });
+
+    test('Libertiy sum is correct', () {
+      Group blackgroup = testgame.boardState["aa"].group;
+      expect(blackgroup.sumLiberties(), 3);
+    });
+
+    test('White Coordinates are correct', () {
+      Group whitegroup = testgame.boardState["bb"].group;
+      expect(whitegroup.stones[0].coordinates.returnMapCoordiante(), "bb");
+      expect(whitegroup.stones[1].coordinates.returnMapCoordiante(), "bc");
+      expect(whitegroup.stones[2].coordinates.returnMapCoordiante(), "cc");
+    });
+
+//The stones have more liberties then the group has in reality this equals out upon reaching zero
+    test('White Libertiy sum is correct', () {
+      Group whitegroup = testgame.boardState["bb"].group;
+      expect(whitegroup.stones[0].liberties, 2);
+      expect(whitegroup.stones[1].liberties, 1);
+      expect(whitegroup.stones[2].liberties, 3);
+      expect(whitegroup.sumLiberties(), 6);
     });
   });
 }

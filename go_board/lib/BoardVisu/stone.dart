@@ -10,6 +10,7 @@ class StoneData {
   List<BoardCoordiante> neighbors;
   int liberties;
   StoneColor color;
+  //is only manipulated  via the Group object
   Group group;
 
   StoneData(
