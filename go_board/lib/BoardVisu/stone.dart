@@ -103,7 +103,7 @@ class StoneData {
     for (BoardCoordiante coord in neighbors) {
       boardState[coord.returnMapCoordiante()]
           .freeNeighbors
-          .add(coord.returnMapCoordiante());
+          .add(this.coordinates.returnMapCoordiante());
     }
   }
 }
