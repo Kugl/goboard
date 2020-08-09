@@ -1,5 +1,6 @@
 import 'package:go_board/BoardVisu/stone.dart';
 import 'package:go_board/game/gamelogic.dart';
+import 'package:go_board/game/group.dart';
 import 'package:go_board/helpers/coordinateHelper.dart';
 import 'package:test/test.dart';
 

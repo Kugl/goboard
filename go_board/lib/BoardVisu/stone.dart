@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_board/game/gamelogic.dart';
+import 'package:go_board/game/group.dart';
 import 'package:go_board/helpers/coordinateHelper.dart';
 import 'package:provider/provider.dart';
 

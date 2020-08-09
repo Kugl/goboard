@@ -1,54 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_board/BoardVisu/stone.dart';
+import 'package:go_board/game/group.dart';
 import 'package:go_board/helpers/coordinateHelper.dart';
-
-class Group {
-  List<StoneData> stones = [];
-
-  Group.empty();
-
-  Group(StoneData stone) {
-    addStone(stone);
-  }
-
-//adds stoneto group and palces reference
-  addStone(StoneData stone) {
-    stones.add(stone);
-    stone.group = this;
-  }
-
-  Set<String> sumLiberties() {
-    Set<String> freeLib = <String>{};
-    for (StoneData stone in stones) {
-      for (String coord in stone.freeNeighbors) {
-        freeLib.add(coord);
-      }
-    }
-    return freeLib;
-  }
-
-  //merge the other group int this group and correct stone info
-  merge(Group otherGroup) {
-    List<StoneData> stonecollector = [];
-    for (StoneData stone in otherGroup.stones) {
-      //this.stones.add(stone);
-      stonecollector.add(stone);
-      //addStone(stone);
-    }
-    for (StoneData stone in stonecollector) {
-      addStone(stone);
-    }
-  }
-
-  killGroup(Map<String, StoneData> boardState) {
-    for (StoneData stone in this.stones) {
-      stone.kill(boardState);
-    }
-    for (StoneData stone in this.stones) {
-      stone.recalculateFreeNeigbors(boardState);
-    }
-  }
-}
 
 enum Stage { ungrouped, grouped }
 
@@ -61,7 +14,8 @@ class StoneStruct {
 
 class GameData extends ChangeNotifier {
   Map<String, StoneData> boardState = Map<String, StoneData>();
-  var oldBoardState = [];
+  //Old coordinate for Ko check. Coord outside the board as 0. (Biggest GoBoard is 19x19)
+  BoardCoordiante oldcoord = BoardCoordiante(20, 20);
 
   bool blackToPlay = true;
   int boardSize = 9;
@@ -85,10 +39,16 @@ class GameData extends ChangeNotifier {
     }
   }
 
-  bool _checkIfPlacementIsLegal(StoneData theCurrentStone) {
+  bool _checkIfPlacementIsLegal(
+      StoneData theCurrentStone, BoardCoordiante oldcoord) {
     bool moveLegal = true;
     if (theCurrentStone.freeNeighbors.length == 0) {
       moveLegal = false;
+      //Ko!
+      if (theCurrentStone.coordinates.returnMapCoordiante() ==
+          oldcoord.returnMapCoordiante()) {
+        return moveLegal;
+      }
       StoneColor targetCol = _calculateTargetcolor();
 
       for (BoardCoordiante badNeighbor in theCurrentStone.neighbors) {
@@ -121,7 +81,7 @@ class GameData extends ChangeNotifier {
     //Map<String, StoneBackup> oldBoardState = _createBackup();
 
     //prevent sucidal moves
-    if (!_checkIfPlacementIsLegal(theCurrentStone)) {
+    if (!_checkIfPlacementIsLegal(theCurrentStone, oldcoord)) {
       return;
     }
     // Change board state to reflect presence of new stone
@@ -158,22 +118,23 @@ class GameData extends ChangeNotifier {
       currentGroup = Group(theCurrentStone);
     }
 
+    oldcoord = BoardCoordiante(20, 20);
+    List<StoneData> deadstones = [];
     for (BoardCoordiante badNeighbor in theCurrentStone.neighbors) {
       StoneData currentNeighbor = boardState[badNeighbor.returnMapCoordiante()];
       //deal with enenmies
       if (theCurrentStone.color != currentNeighbor.color &&
           currentNeighbor.color != StoneColor.none) {
         if (currentNeighbor.group.sumLiberties().length == 0) {
-          currentNeighbor.group.killGroup(boardState);
+          deadstones.addAll(currentNeighbor.group.killGroup(boardState));
         }
       }
     } // for
 
-    //check for groups and add if possible
-    // form groups with all neighbours that are of same color
-    // adjust group liberties
-
-    // remove all groups with zero liberties of opposite color
+    //KO rules
+    if (deadstones.length == 1) {
+      oldcoord = deadstones[0].coordinates;
+    }
 
     //falls back to old state if move ended up illegal
 /*     if (theCurrentStone.liberties == 0) {
