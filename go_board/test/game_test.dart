@@ -241,6 +241,14 @@ void main() {
     testgame.placeStone(BoardCoordiante(1, 2));
     testgame.placeStone(BoardCoordiante(0, 2));
     testgame.placeStone(BoardCoordiante(0, 1));
-    //TODO: add Ko trigger move
+    testgame.placeStone(BoardCoordiante(0, 2));
+
+    test('Stone ab has 1 liberties after place', () {
+      expect(testgame.boardState["ab"].freeNeighbors.length, 1);
+    });
+
+    test('Color ab is white', () {
+      expect(testgame.boardState["ab"].color == StoneColor.white, true);
+    });
   });
 }
