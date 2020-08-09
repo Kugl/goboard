@@ -77,8 +77,6 @@ class GameData extends ChangeNotifier {
 
   placeStone(BoardCoordiante coord) {
     StoneData theCurrentStone = boardState[coord.returnMapCoordiante()];
-    //Stores the old state in case a fallback is necessary e.g. for Ko
-    //Map<String, StoneBackup> oldBoardState = _createBackup();
 
     //prevent sucidal moves
     if (!_checkIfPlacementIsLegal(theCurrentStone, oldcoord)) {
@@ -136,13 +134,6 @@ class GameData extends ChangeNotifier {
       oldcoord = deadstones[0].coordinates;
     }
 
-    //falls back to old state if move ended up illegal
-/*     if (theCurrentStone.liberties == 0) {
-      _replayBackup(oldBoardState);
-      notifyListeners();
-      return;
-    } */
-
     _changePlayer();
     notifyListeners();
   }
@@ -162,23 +153,4 @@ class GameData extends ChangeNotifier {
   void _colorStone(StoneData theCurrentStone) {
     theCurrentStone.fillOut(_calculateTargetcolor());
   }
-
-/*   Map<String, StoneBackup> _createBackup() {
-    Map<String, StoneBackup> backup = Map<String, StoneBackup>();
-    boardState.forEach((key, value) {
-      backup[key] = StoneBackup(
-          color: value.color,
-          liberties: value.liberties,
-          groupStones: value.group.stones);
-    });
-    return backup;
-  }
-
-  _replayBackup(Map<String, StoneBackup> backup) {
-    boardState.forEach((key, value) {
-      boardState[key].color = backup[key].color;
-      boardState[key].liberties = backup[key].liberties;
-      boardState[key].group.stones = backup[key].groupStones;
-    });
-  } */
 }
