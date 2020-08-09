@@ -3,6 +3,20 @@ import 'package:go_board/BoardVisu/stone.dart';
 import 'package:go_board/game/group.dart';
 import 'package:go_board/helpers/coordinateHelper.dart';
 
+//TODO: Error messages
+//TODO: Pass Button
+//TODO: Player Color indicator
+//TODO: Change pass button color
+//TODO: Coordiantes / Axis
+//TODO: New Game Button
+//TODO: Save Game feature
+//TODO: End game when both pass
+//TODO: Victory screen
+//TODO: Scoring Logic
+//TODO: Prod. Build
+//TODO: Performance Test
+//TODO:
+
 enum Stage { ungrouped, grouped }
 
 class StoneStruct {
