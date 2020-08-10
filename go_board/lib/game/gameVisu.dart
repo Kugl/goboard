@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_board/BoardVisu/gridAndCell.dart';
+import 'package:go_board/game/passbutton.dart';
 import 'package:provider/provider.dart';
 
 import 'gamelogic.dart';
@@ -26,16 +27,7 @@ class _GameState extends State<Game> {
             boardState: game.boardState,
           ),
         ),
-        Container(
-          width: 200,
-          child: FlatButton(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            onPressed: () {},
-            child: Text("Pass"),
-            color: Colors.white,
-          ),
-        ),
+        PassButton(),
       ]),
     );
   }
