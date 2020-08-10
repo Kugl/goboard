@@ -14,7 +14,7 @@ class _GameState extends State<Game> {
   @override
   Widget build(BuildContext context) {
     //The Game Data object is where the logic is rooted
-    GameData game = GameData(context: context);
+    GameData game = GameData();
     //TODO: Container and column can be removed after testing
     //Provides the Game data down the tree
     return ChangeNotifierProvider<GameData>(

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:go_board/BoardVisu/stone.dart';
 import 'package:go_board/game/gamelogic.dart';
 import 'package:go_board/game/group.dart';
@@ -5,6 +6,8 @@ import 'package:go_board/helpers/coordinateHelper.dart';
 import 'package:test/test.dart';
 
 void main() {
+  BuildContext context;
+
   group('Game', () {
     GameData testgame = GameData();
     test('Stone with coord cd exists and has a color property', () {

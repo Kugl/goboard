@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_board/BoardVisu/snackbar.dart';
 import 'package:go_board/game/gamelogic.dart';
 import 'package:go_board/game/group.dart';
 import 'package:go_board/helpers/coordinateHelper.dart';
@@ -132,10 +133,13 @@ class Stone extends StatelessWidget {
           //TODO: change to null
           elevation: 4,
           onPressed: () {
+            //Dismiss old snackbars when stone is palced
+            SnackWrap.dismissSnackbar(context);
             print(coordinates.returnMapCoordiante());
             //if black is to play
             GameData gamedata = Provider.of<GameData>(context, listen: false);
-            gamedata.placeStone(coordinates);
+            String error = gamedata.placeStone(coordinates);
+            SnackWrap.createSnackBar(context, text: error);
           },
         ),
       );

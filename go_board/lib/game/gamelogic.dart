@@ -27,7 +27,7 @@ class StoneStruct {
 }
 
 class GameData extends ChangeNotifier {
-  BuildContext context;
+  String errortext;
   Map<String, StoneData> boardState = Map<String, StoneData>();
   //Old coordinate for Ko check. Coord outside the board as 0. (Biggest GoBoard is 19x19)
   BoardCoordiante oldcoord = BoardCoordiante(20, 20);
@@ -35,7 +35,7 @@ class GameData extends ChangeNotifier {
   bool blackToPlay = true;
   int boardSize = 9;
 
-  GameData({@required this.context}) {
+  GameData() {
     _populateBoard();
   }
 
@@ -62,8 +62,7 @@ class GameData extends ChangeNotifier {
       //Ko!
       if (theCurrentStone.coordinates.returnMapCoordiante() ==
           oldcoord.returnMapCoordiante()) {
-        SnackWrap.createSnackBar(context,
-            text: "Ko! You cannot play here this turn");
+        errortext = "Ko! You cannot play here this turn";
         return moveLegal;
       }
       StoneColor targetCol = _calculateTargetcolor();
@@ -90,20 +89,18 @@ class GameData extends ChangeNotifier {
 
     }
     if (moveLegal == false) {
-      SnackWrap.createSnackBar(context,
-          text: "Illegal move. A stone placed here would die immediately");
+      errortext = "Illegal move. A stone placed here would die immediately";
     }
     return moveLegal;
   }
 
-  placeStone(BoardCoordiante coord) {
+  //returns an Errortext
+  String placeStone(BoardCoordiante coord) {
     StoneData theCurrentStone = boardState[coord.returnMapCoordiante()];
 
-    //Dismiss old snackbars when stone is palced
-    SnackWrap.dismissSnackbar(context);
     //prevent sucidal moves
     if (!_checkIfPlacementIsLegal(theCurrentStone, oldcoord)) {
-      return;
+      return errortext;
     }
     // Change board state to reflect presence of new stone
     _colorStone(theCurrentStone);
@@ -159,6 +156,7 @@ class GameData extends ChangeNotifier {
 
     _changePlayer();
     notifyListeners();
+    return null;
   }
 
   void _changePlayer() {
