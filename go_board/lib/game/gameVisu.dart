@@ -15,8 +15,6 @@ class _GameState extends State<Game> {
 
   @override
   Widget build(BuildContext context) {
-    print("State:");
-    print(game.boardState);
     //TODO: Container and column can be removed after testing
     //Provides the Game data down the tree
     return ChangeNotifierProvider<GameData>(
@@ -26,6 +24,16 @@ class _GameState extends State<Game> {
           child: Grid(
             gridSize: game.boardSize,
             boardState: game.boardState,
+          ),
+        ),
+        Container(
+          width: 200,
+          child: FlatButton(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            onPressed: () {},
+            child: Text("Pass"),
+            color: Colors.white,
           ),
         ),
       ]),
