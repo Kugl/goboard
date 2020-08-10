@@ -11,11 +11,10 @@ class Game extends StatefulWidget {
 }
 
 class _GameState extends State<Game> {
-  //The Game Data object is where the logic is rooted
-  GameData game = GameData();
-
   @override
   Widget build(BuildContext context) {
+    //The Game Data object is where the logic is rooted
+    GameData game = GameData(context: context);
     //TODO: Container and column can be removed after testing
     //Provides the Game data down the tree
     return ChangeNotifierProvider<GameData>(

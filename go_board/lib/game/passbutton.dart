@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_board/BoardVisu/snackbar.dart';
 import 'package:go_board/game/gamelogic.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +11,9 @@ class PassButton extends StatelessWidget {
       width: 200,
       child: FlatButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        onPressed: () {},
+        onPressed: () {
+          SnackWrap.createSnackBar(context, text: "Passed");
+        },
         child: Text(
           "Pass",
           style:

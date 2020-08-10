@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_board/BoardVisu/snackbar.dart';
 import 'package:go_board/BoardVisu/stone.dart';
 import 'package:go_board/game/group.dart';
 import 'package:go_board/helpers/coordinateHelper.dart';
 
 //TODO: Error messages
-//TODO: Pass Button
 //TODO: Player Color indicator
 //TODO: Change pass button color
 //TODO: Coordiantes / Axis
@@ -27,6 +27,7 @@ class StoneStruct {
 }
 
 class GameData extends ChangeNotifier {
+  BuildContext context;
   Map<String, StoneData> boardState = Map<String, StoneData>();
   //Old coordinate for Ko check. Coord outside the board as 0. (Biggest GoBoard is 19x19)
   BoardCoordiante oldcoord = BoardCoordiante(20, 20);
@@ -34,7 +35,7 @@ class GameData extends ChangeNotifier {
   bool blackToPlay = true;
   int boardSize = 9;
 
-  GameData() {
+  GameData({@required this.context}) {
     _populateBoard();
   }
 
@@ -61,6 +62,8 @@ class GameData extends ChangeNotifier {
       //Ko!
       if (theCurrentStone.coordinates.returnMapCoordiante() ==
           oldcoord.returnMapCoordiante()) {
+        SnackWrap.createSnackBar(context,
+            text: "Ko! You cannot play here this turn");
         return moveLegal;
       }
       StoneColor targetCol = _calculateTargetcolor();
@@ -86,12 +89,18 @@ class GameData extends ChangeNotifier {
       } // for
 
     }
+    if (moveLegal == false) {
+      SnackWrap.createSnackBar(context,
+          text: "Illegal move. A stone placed here would die immediately");
+    }
     return moveLegal;
   }
 
   placeStone(BoardCoordiante coord) {
     StoneData theCurrentStone = boardState[coord.returnMapCoordiante()];
 
+    //Dismiss old snackbars when stone is palced
+    SnackWrap.dismissSnackbar(context);
     //prevent sucidal moves
     if (!_checkIfPlacementIsLegal(theCurrentStone, oldcoord)) {
       return;
