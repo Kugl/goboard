@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:go_board/BoardVisu/snackbar.dart';
 import 'package:go_board/BoardVisu/stone.dart';
 import 'package:go_board/game/group.dart';
 import 'package:go_board/helpers/coordinateHelper.dart';
 
-//TODO: Error messages
+//TODO: replace errortext solution in Gamelogic with something more elegant
+//TODO: Split Gamevisu from Gamelogic
 //TODO: Player Color indicator
-//TODO: Change pass button color
-//TODO: Coordiantes / Axis
+//TODO: Size Letter labels more elegant
+//TODO: Size Board according to Screensize
 //TODO: New Game Button
 //TODO: Save Game feature
 //TODO: End game when both pass

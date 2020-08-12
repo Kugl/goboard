@@ -6,8 +6,6 @@ import 'package:go_board/helpers/coordinateHelper.dart';
 import 'package:test/test.dart';
 
 void main() {
-  BuildContext context;
-
   group('Game', () {
     GameData testgame = GameData();
     test('Stone with coord cd exists and has a color property', () {

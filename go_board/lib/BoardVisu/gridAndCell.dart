@@ -28,6 +28,12 @@ class Grid extends StatelessWidget {
         ),
       );
     }
+    rowList.add(
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: generateLabels(items: columns),
+      ),
+    );
     return rowList;
   }
 
@@ -37,26 +43,92 @@ class Grid extends StatelessWidget {
     for (var i = 0; i <= items - 1; i++) {
       currentStone =
           boardState[BoardCoordiante(rownumber, i).returnMapCoordiante()];
-      list.add(Cell(
-          stone: Stone(
-        coordinates: currentStone.coordinates,
-      )));
+      //TODO: switch to case checkOrientation method
+      if (i == 0 && rownumber == 0) {
+        list.add(Cell(
+            orientation: CrossOrientation.leftbottom,
+            stone: Stone(
+              coordinates: currentStone.coordinates,
+            )));
+      } else if (i == 0 && rownumber == items - 1) {
+        list.add(Cell(
+            orientation: CrossOrientation.lefttop,
+            stone: Stone(
+              coordinates: currentStone.coordinates,
+            )));
+      } else if (i == items - 1 && rownumber == items - 1) {
+        list.add(Cell(
+            orientation: CrossOrientation.righttop,
+            stone: Stone(
+              coordinates: currentStone.coordinates,
+            )));
+      } else if (i == items - 1 && rownumber == 0) {
+        list.add(Cell(
+            orientation: CrossOrientation.rightbottom,
+            stone: Stone(
+              coordinates: currentStone.coordinates,
+            )));
+      } else if (i == 0) {
+        list.add(Cell(
+            orientation: CrossOrientation.left,
+            stone: Stone(
+              coordinates: currentStone.coordinates,
+            )));
+      } else if (i == items - 1) {
+        list.add(Cell(
+            orientation: CrossOrientation.right,
+            stone: Stone(
+              coordinates: currentStone.coordinates,
+            )));
+      } else {
+        if (rownumber == 0) {
+          list.add(Cell(
+              orientation: CrossOrientation.bottom,
+              stone: Stone(
+                coordinates: currentStone.coordinates,
+              )));
+          //only works for square boards
+        } else if (rownumber == items - 1) {
+          list.add(Cell(
+              orientation: CrossOrientation.top,
+              stone: Stone(
+                coordinates: currentStone.coordinates,
+              )));
+        } else {
+          list.add(Cell(
+              stone: Stone(
+            coordinates: currentStone.coordinates,
+          )));
+        }
+      }
     }
+    list.add(Text((rownumber + 1).toString()));
     return list;
   }
 }
 
+List<Widget> generateLabels({int items = 0}) {
+  List<Widget> list = new List();
+  for (var i = 0; i <= items - 1; i++) {
+    list.add(SizedBox(
+        height: 40,
+        width: 40,
+        child: Center(child: Text(letters[i].toUpperCase()))));
+  }
+  return list;
+}
+
 class Cell extends StatelessWidget {
   final Stone stone;
-  Cell({this.stone});
+  final CrossOrientation orientation;
+  Cell({this.stone, this.orientation});
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(),
       //the Cross Widget draws the crosses on the board
       child: Cross(
-        //TODO: fix
-        //orientation: CrossOrientation.right,
+        orientation: orientation,
         child: Padding(padding: const EdgeInsets.all(1.0), child: stone),
       ),
     );

@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
 
-enum CrossOrientation { left, right }
+enum CrossOrientation {
+  left,
+  right,
+  top,
+  bottom,
+  lefttop,
+  righttop,
+  leftbottom,
+  rightbottom
+}
 
 class Cross extends StatelessWidget {
   final Widget child;
@@ -30,6 +39,7 @@ class DrawCross extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    //TODO: Change to kind & rotation
     switch (this.orientation) {
       case CrossOrientation.right:
         canvas.drawLine(Offset(0, size.height / 2),
@@ -42,6 +52,42 @@ class DrawCross extends CustomPainter {
             Offset(size.width, size.height / 2), _paint);
         canvas.drawLine(Offset(size.width / 2, 0),
             Offset(size.width / 2, size.height), _paint);
+        break;
+      case CrossOrientation.top:
+        canvas.drawLine(Offset(0, size.height / 2),
+            Offset(size.width, size.height / 2), _paint);
+        canvas.drawLine(Offset(size.width / 2, size.height / 2),
+            Offset(size.width / 2, size.height), _paint);
+        break;
+      case CrossOrientation.bottom:
+        canvas.drawLine(Offset(0, size.height / 2),
+            Offset(size.width, size.height / 2), _paint);
+        canvas.drawLine(Offset(size.width / 2, 0),
+            Offset(size.width / 2, size.height / 2), _paint);
+        break;
+      case CrossOrientation.lefttop:
+        canvas.drawLine(Offset(size.width / 2, size.height / 2),
+            Offset(size.width, size.height / 2), _paint);
+        canvas.drawLine(Offset(size.width / 2, size.height / 2),
+            Offset(size.width / 2, size.height), _paint);
+        break;
+      case CrossOrientation.righttop:
+        canvas.drawLine(Offset(0, size.height / 2),
+            Offset(size.width / 2, size.height / 2), _paint);
+        canvas.drawLine(Offset(size.width / 2, size.height / 2),
+            Offset(size.width / 2, size.height), _paint);
+        break;
+      case CrossOrientation.leftbottom:
+        canvas.drawLine(Offset(size.width / 2, size.height / 2),
+            Offset(size.width, size.height / 2), _paint);
+        canvas.drawLine(Offset(size.width / 2, 0),
+            Offset(size.width / 2, size.height / 2), _paint);
+        break;
+      case CrossOrientation.rightbottom:
+        canvas.drawLine(Offset(0, size.height / 2),
+            Offset(size.width / 2, size.height / 2), _paint);
+        canvas.drawLine(Offset(size.width / 2, 0),
+            Offset(size.width / 2, size.height / 2), _paint);
         break;
       default:
         canvas.drawLine(Offset(0, size.height / 2),
