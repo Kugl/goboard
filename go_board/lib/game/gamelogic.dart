@@ -15,7 +15,7 @@ import 'package:go_board/helpers/coordinateHelper.dart';
 //TODO: Scoring Logic
 //TODO: Prod. Build
 //TODO: Performance Test
-//TODO:
+//TODO: Add dots to some corsses
 
 enum Stage { ungrouped, grouped }
 
