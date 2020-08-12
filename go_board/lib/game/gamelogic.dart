@@ -163,13 +163,16 @@ class GameData extends ChangeNotifier {
     return null;
   }
 
-  passTurn() {
+  bool passTurn() {
+    bool gameover = false;
     if (playerPassed == true) {
       _endGame();
+      gameover = true;
     }
     _changePlayer();
     notifyListeners();
     playerPassed = true;
+    return gameover;
   }
 
   _endGame() {}

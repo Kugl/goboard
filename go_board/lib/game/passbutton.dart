@@ -6,6 +6,33 @@ import 'package:provider/provider.dart';
 class PassButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Future<void> _showGameOverDialog() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Game Over'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text('Both players passed. The game is over'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Approve'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     GameData game = Provider.of<GameData>(context);
     return Container(
       width: 200,
@@ -13,7 +40,10 @@ class PassButton extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         onPressed: () {
           SnackWrap.createSnackBar(context, text: "Passed");
-          game.passTurn();
+          bool gameover = game.passTurn();
+          if (gameover == true) {
+            _showGameOverDialog();
+          }
         },
         child: Text(
           "Pass",
