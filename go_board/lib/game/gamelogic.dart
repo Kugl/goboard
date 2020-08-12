@@ -27,6 +27,7 @@ class StoneStruct {
 }
 
 class GameData extends ChangeNotifier {
+  bool playerPassed = false;
   String errortext;
   Map<String, StoneData> boardState = Map<String, StoneData>();
   //Old coordinate for Ko check. Coord outside the board as 0. (Biggest GoBoard is 19x19)
@@ -131,11 +132,12 @@ class GameData extends ChangeNotifier {
         }
       }
     } // for
-    //If tehstone wasent grouped up it is a gtoup of one
+    //If the stone wasnt grouped up it is a gtoup of one
     if (stage != Stage.grouped) {
       currentGroup = Group(theCurrentStone);
     }
 
+    //Oldcoord defaults to be bigger then the biggest board
     oldcoord = BoardCoordiante(20, 20);
     List<StoneData> deadstones = [];
     for (BoardCoordiante badNeighbor in theCurrentStone.neighbors) {
@@ -155,9 +157,22 @@ class GameData extends ChangeNotifier {
     }
 
     _changePlayer();
+    //pass gets reset when a stone is played
+    playerPassed = false;
     notifyListeners();
     return null;
   }
+
+  passTurn() {
+    if (playerPassed == true) {
+      _endGame();
+    }
+    _changePlayer();
+    notifyListeners();
+    playerPassed = true;
+  }
+
+  _endGame() {}
 
   void _changePlayer() {
     blackToPlay = !blackToPlay;

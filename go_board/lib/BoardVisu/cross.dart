@@ -39,7 +39,6 @@ class DrawCross extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    //TODO: Change to kind & rotation
     switch (this.orientation) {
       case CrossOrientation.right:
         canvas.drawLine(Offset(0, size.height / 2),

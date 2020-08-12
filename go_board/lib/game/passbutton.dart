@@ -13,6 +13,7 @@ class PassButton extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         onPressed: () {
           SnackWrap.createSnackBar(context, text: "Passed");
+          game.passTurn();
         },
         child: Text(
           "Pass",
