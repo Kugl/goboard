@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_board/BoardVisu/stone.dart';
+import 'package:go_board/game/gamescore.dart';
 import 'package:go_board/game/group.dart';
 import 'package:go_board/helpers/coordinateHelper.dart';
 
@@ -10,8 +11,6 @@ import 'package:go_board/helpers/coordinateHelper.dart';
 //TODO: Size Board according to Screensize
 //TODO: New Game Button
 //TODO: Save Game feature
-//TODO: End game when both pass
-//TODO: Victory screen
 //TODO: Scoring Logic
 //TODO: Prod. Build
 //TODO: Performance Test
@@ -175,7 +174,10 @@ class GameData extends ChangeNotifier {
     return gameover;
   }
 
-  _endGame() {}
+  _endGame() {
+    var scorer = Scorer();
+    scorer.scoreGame(boardState);
+  }
 
   void _changePlayer() {
     blackToPlay = !blackToPlay;
