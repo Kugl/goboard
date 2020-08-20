@@ -175,8 +175,8 @@ class GameData extends ChangeNotifier {
   }
 
   _endGame() {
-    var scorer = Scorer();
-    scorer.scoreGame(boardState);
+    var scorer = Scorer(boardState: boardState);
+    scorer.scoreGame();
   }
 
   void _changePlayer() {

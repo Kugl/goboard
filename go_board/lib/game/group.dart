@@ -1,7 +1,7 @@
 import 'package:go_board/BoardVisu/stone.dart';
 
 class Group {
-  List<StoneData> stones = [];
+  Set<StoneData> stones = {};
 
   Group.empty();
 
@@ -38,7 +38,7 @@ class Group {
     }
   }
 
-  List<StoneData> killGroup(Map<String, StoneData> boardState) {
+  Set<StoneData> killGroup(Map<String, StoneData> boardState) {
     for (StoneData stone in this.stones) {
       stone.kill(boardState);
     }

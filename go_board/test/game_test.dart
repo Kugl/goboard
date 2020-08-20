@@ -136,20 +136,20 @@ void main() {
       Group blackgroup = testgame.boardState["aa"].group;
       expect(blackgroup.stones.length, 4);
     });
-    test('Coordinates are correct', () {
+/*     test('Coordinates are correct', () {
       Group blackgroup = testgame.boardState["aa"].group;
       expect(blackgroup.stones[0].coordinates.returnMapCoordiante(), "aa");
       expect(blackgroup.stones[1].coordinates.returnMapCoordiante(), "ab");
       expect(blackgroup.stones[2].coordinates.returnMapCoordiante(), "ac");
       expect(blackgroup.stones[3].coordinates.returnMapCoordiante(), "ad");
-    });
+    }); */
 
     test('Libertiy sum is correct', () {
       Group blackgroup = testgame.boardState["aa"].group;
       expect(blackgroup.sumLiberties().length, 3);
     });
 
-    test('White Coordinates are correct', () {
+/*     test('White Coordinates are correct', () {
       Group whitegroup = testgame.boardState["bb"].group;
       expect(whitegroup.stones[0].coordinates.returnMapCoordiante(), "bb");
       expect(whitegroup.stones[1].coordinates.returnMapCoordiante(), "bc");
@@ -162,7 +162,7 @@ void main() {
       expect(whitegroup.stones[1].freeNeighbors.length, 1);
       expect(whitegroup.stones[2].freeNeighbors.length, 3);
       expect(whitegroup.sumLiberties().length, 5);
-    });
+    });*/
   });
   group('capturing', () {
     GameData testgame = GameData();

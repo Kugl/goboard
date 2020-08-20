@@ -26,6 +26,9 @@ class StoneData {
   //is only manipulated  via the Group object
   Group group = Group.empty();
 
+  //for scoring
+  bool counted = false;
+
   StoneData(
       {@required this.coordinates,
       @required this.neighbors,
